@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Real_Time_SMS_App.InitialInfoPage"
+             xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             Title="Initial Info SMS">
+    <Grid RowSpacing="0">
+        <!-- Define grid rows: Header (auto), Body (*), Footer (auto) -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <!-- Static Header -->
+            <RowDefinition Height="*" />
+            <!-- Scrollable Body -->
+            <RowDefinition Height="50" />
+            <!-- Static Footer -->
+        </Grid.RowDefinitions>
+
+        <!-- Static Header -->
+        <BoxView Grid.Row="0" BackgroundColor="DarkBlue" />
+
+        <!-- Scrollable Form Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <!-- Station Name -->
+                <Label Text="Station Name:" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter station name" Text="{Binding StationName}"/>
+
+                <!-- Address -->
+                <Label Text="Address:" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter address" Text="{Binding Address}"/>
+
+                <!-- Responding Team -->
+                <Label Text="Responding Team:" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter responding team" Text="{Binding RespondingTeam}"/>
+
+                <!-- Time & Date Reported -->
+                <Label Text="Time and Date Reported:" FontAttributes="Bold"/>
+                <DatePicker />
+                <TimePicker />
+
+                <!-- Involved -->
+                <Label Text="Involved:" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter involved party/structure" />
+
+                <!-- Alarm Status -->
+                <Label Text="Alarm Status:" FontAttributes="Bold"/>
+                <Picker>
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>1st</x:String>
+                            <x:String>2nd</x:String>
+                            <x:String>3rd</x:String>
+                            <x:String>4th</x:String>
+                            <x:String>Alpha</x:String>
+                            <x:String>Bravo</x:String>
+                            <x:String>General</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+
+                <!-- Time of Arrival -->
+                <Label Text="Time of Arrival (24-hour):" FontAttributes="Bold"/>
+                <DatePicker />
+                <TimePicker />
+
+                <!-- Fire Out -->
+                <Label Text="Fire Out (Date and Time):" FontAttributes="Bold"/>
+                <DatePicker />
+                <TimePicker />
+
+                <!-- Ground Commander -->
+                <Label Text="Ground Commander:" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter name of ground commander" />
+
+                <!-- Contact number of Station -->
+                <Label Text="Contact Number of Station:" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter contact number" Keyboard="Telephone" />
+
+                <!-- Sender -->
+                <Label Text="Sender:" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter sender name" />
+
+                <!-- Send Button -->
+                <Button 
+                    Text="Send" 
+                    BackgroundColor="DarkRed" 
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    Command="{Binding SendCommand}" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Static Footer -->
+        <BoxView Grid.Row="2" BackgroundColor="DarkBlue" />
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             x:Class="Real_Time_SMS_App.MainPage">
+
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Image
+                Source="sms.png"
+                HeightRequest="150"
+                Aspect="AspectFit"
+                 />
+
+            <Label
+                Text="Real Time SMS Reporting"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level5" />
+
+        <Grid RowDefinitions="*,*" ColumnDefinitions="*,*" Padding="10" RowSpacing="10" ColumnSpacing="10">
+
+            <!-- Top-left (Initial Info) -->
+            <Grid Grid.Row="0" Grid.Column="0" BackgroundColor="LightBlue">
+                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
+                    <Image Source="initialinfo.png" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="Initial" TextColor="Black" VerticalTextAlignment="Center"/>
+                </HorizontalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding InitialCommand}" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <!-- Top-right (Progress Info) -->
+            <Grid Grid.Row="0" Grid.Column="1" BackgroundColor="LightGreen">
+                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
+                    <Image Source="progressinfo.png" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="Progress" TextColor="Black" VerticalTextAlignment="Center"/>
+                </HorizontalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ProgressCommand}" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <!-- Bottom-left (Complete Info) -->
+            <Grid Grid.Row="1" Grid.Column="0" BackgroundColor="LightCoral">
+                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
+                    <Image Source="completeinfo.png" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="Complete" TextColor="Black" VerticalTextAlignment="Center"/>
+                </HorizontalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CompleteCommand}" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <!-- Bottom-right (Contacts) -->
+            <Grid Grid.Row="1" Grid.Column="1" BackgroundColor="LightGoldenrodYellow">
+                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
+                    <Image Source="contacts.png" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="Contacts" TextColor="Black" VerticalTextAlignment="Center"/>
+                </HorizontalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ContactsCommand}" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+        </Grid>
+
+
+    </VerticalStackLayout>
+
+
+</ContentPage>
