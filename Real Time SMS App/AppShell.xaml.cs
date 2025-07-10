@@ -6,7 +6,7 @@
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(InitialInfoPage), typeof(InitialInfoPage));
-
+            Routing.RegisterRoute(nameof(ContactPage), typeof(ContactPage));
         }
     }
 }

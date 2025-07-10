@@ -31,7 +31,7 @@ namespace Real_Time_SMS_App.ViewModels
         [RelayCommand]
         private async Task Contacts()
         {
-            // Navigate or perform logic
+           await Shell.Current.GoToAsync(nameof(ContactPage));
         }
 
     }
