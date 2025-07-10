@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿
+using Microsoft.Extensions.Logging;
 using Real_Time_SMS_App.ViewModels;
+
 
 namespace Real_Time_SMS_App;
 
@@ -23,7 +25,8 @@ public static class MauiProgram
         builder.Services.AddTransient<InitialInfoViewModel>();
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<MainPageViewModel>();
-
+		builder.Services.AddTransient<ContactPage>();
+		builder.Services.AddTransient<ContactViewModel>();
         return builder.Build();
 	}
 }

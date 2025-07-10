@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+
+             xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             x:Class="Real_Time_SMS_App.ContactPage"
+             Title="Contact List">
+
+    <ContentPage.BindingContext>
+        <viewmodel:ContactViewModel />
+    </ContentPage.BindingContext>
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+
+        <!-- Phone number input -->
+        <Label Text="Enter Phone Number" FontAttributes="Bold" />
+        <Entry Placeholder="e.g. 09xxxxxxxxx"
+               Keyboard="Telephone"
+               Text="{Binding NewPhoneNumber}" />
+
+        <Button Text="Add Number"
+                Command="{Binding AddPhoneNumberCommand}"
+                BackgroundColor="DarkGreen"
+                TextColor="White" />
+
+        <!-- List of contacts -->
+        <CollectionView ItemsSource="{Binding PhoneNumbers}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="{Binding .}" VerticalTextAlignment="Center" />
+                        <Button Text="✖"
+                                Grid.Column="1"
+                                BackgroundColor="Transparent"
+                                TextColor="Red"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ContactViewModel}}, Path=DeletePhoneNumberCommand}"
+                                CommandParameter="{Binding .}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>

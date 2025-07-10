@@ -37,16 +37,16 @@
 
                 <!-- Time & Date Reported -->
                 <Label Text="Time and Date Reported:" FontAttributes="Bold"/>
-                <DatePicker />
-                <TimePicker />
+                <DatePicker Date="{Binding ReportDate}"/>
+                <TimePicker Time="{Binding ReportTime}"/>
 
                 <!-- Involved -->
                 <Label Text="Involved:" FontAttributes="Bold"/>
-                <Entry Placeholder="Enter involved party/structure" />
+                <Entry Placeholder="Enter involved party/structure" Text="{Binding Involved}"/>
 
                 <!-- Alarm Status -->
                 <Label Text="Alarm Status:" FontAttributes="Bold"/>
-                <Picker>
+                <Picker SelectedItem="{Binding AlarmStatus}">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>1st</x:String>
@@ -62,25 +62,25 @@
 
                 <!-- Time of Arrival -->
                 <Label Text="Time of Arrival (24-hour):" FontAttributes="Bold"/>
-                <DatePicker />
-                <TimePicker />
+                <DatePicker Date="{Binding DateOfArrival}"/>
+                <TimePicker Time="{Binding TimeOfArrival}"/>
 
                 <!-- Fire Out -->
                 <Label Text="Fire Out (Date and Time):" FontAttributes="Bold"/>
-                <DatePicker />
-                <TimePicker />
+                <DatePicker Date="{Binding FireOutDate}"/>
+                <TimePicker Time="{Binding FireOutTime}"/>
 
                 <!-- Ground Commander -->
                 <Label Text="Ground Commander:" FontAttributes="Bold"/>
-                <Entry Placeholder="Enter name of ground commander" />
+                <Entry Placeholder="Enter name of ground commander" Text="{Binding GroundCommander}"/>
 
                 <!-- Contact number of Station -->
                 <Label Text="Contact Number of Station:" FontAttributes="Bold"/>
-                <Entry Placeholder="Enter contact number" Keyboard="Telephone" />
+                <Entry Placeholder="Enter contact number" Keyboard="Telephone" Text="{Binding ContactNumber}"/>
 
                 <!-- Sender -->
                 <Label Text="Sender:" FontAttributes="Bold"/>
-                <Entry Placeholder="Enter sender name" />
+                <Entry Placeholder="Enter sender name" Text="{Binding Sender}"/>
 
                 <!-- Send Button -->
                 <Button 
@@ -89,7 +89,12 @@
                     TextColor="White"
                     FontAttributes="Bold"
                     Command="{Binding SendCommand}" />
-
+                
+                <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                    <CheckBox IsChecked="{Binding IsSaveChecked}" Color="DarkRed" />
+                    <Label Text="Save as default" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                
             </VerticalStackLayout>
         </ScrollView>
 
