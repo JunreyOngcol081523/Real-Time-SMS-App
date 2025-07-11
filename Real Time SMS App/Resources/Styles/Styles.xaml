@@ -131,12 +131,32 @@
             </VisualStateGroupList>
         </Setter>
     </Style>
+    <Style x:Key="HomeCard" TargetType="Border">
+        <Setter Property="BackgroundColor">
+            <AppThemeBinding Light="{StaticResource White}"  Dark="{StaticResource Black}" />
+        </Setter>
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="HeightRequest" Value="140" />
+        <Setter Property="Stroke">
+            <AppThemeBinding Light="{StaticResource Gray200}" Dark="{StaticResource Gray950}" />
+        </Setter>
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="16" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Brush="Black" Opacity="0.2" Radius="10" Offset="5,5" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="CardText" TargetType="Label">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
 
-    <Style TargetType="Frame">
-        <Setter Property="HasShadow" Value="False" />
-        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
-        <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,8,0,0"/>
     </Style>
 
     <Style TargetType="ImageButton">
@@ -392,30 +412,7 @@
             </VisualStateGroupList>
         </Setter>
     </Style>
-  
-    <!--
-    <Style TargetType="TitleBar">
-        <Setter Property="MinimumHeightRequest" Value="32"/>
-        <Setter Property="VisualStateManager.VisualStateGroups">
-            <VisualStateGroupList>
-                <VisualStateGroup x:Name="TitleActiveStates">
-                    <VisualState x:Name="TitleBarTitleActive">
-                        <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="Transparent" />
-                            <Setter Property="ForegroundColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState x:Name="TitleBarTitleInactive">
-                        <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
-                            <Setter Property="ForegroundColor" Value="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray500}}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateGroupList>
-        </Setter>
-    </Style>
-    -->
+
 
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>

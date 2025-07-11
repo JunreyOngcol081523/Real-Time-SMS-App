@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Real_Time_SMS_App.SpecificDetailsPage"
+             xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             Title="Specific Details Page">
+    <ScrollView>
+        <VerticalStackLayout Padding="10">
+            <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
+                <Grid RowSpacing="5" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,Auto">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Involved:" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Involved, Mode=TwoWay}" Placeholder="Involved"/>
+                    <Label Grid.Row="1" Grid.Column="0" Text="Owner/Occupant:" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding NameOfOwnerOccupant, Mode=TwoWay}" Placeholder="Owner/Occupant"/>
+                    <Label Grid.Row="2" Grid.Column="0" Text="No of Families Affected:" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="2" Grid.Column="1" Keyboard="Numeric" Text="{Binding NumberOfFamiliesAffected, Mode=TwoWay}" Placeholder="Families Affected"/>
+                    <Label Grid.Row="3" Grid.Column="0" Text="No of Individuals Affected:" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="3" Grid.Column="1" Keyboard="Numeric" Text="{Binding NumberOfIndividualsAffected, Mode=TwoWay}" Placeholder="Individuals Affected"/>
+                    <Label Grid.Row="4" Grid.Column="0" Text="No of Structures Burned:" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="4" Grid.Column="1" Keyboard="Numeric" Text="{Binding NumberOfStructuresBurned, Mode=TwoWay}" Placeholder="Structures Burned"/>
+                    <Label Grid.Row="5" Grid.Column="0" Text="Floor Area Affected:" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="5" Grid.Column="1" Keyboard="Numeric" Text="{Binding AffectedEstimatedFloorArea, Mode=TwoWay}" Placeholder="Estmd Flr Area (sqm)"/>
+                </Grid>
+            </Border>
+            <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
+                <Grid RowSpacing="5" RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,Auto">
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Responders" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="15" FontAttributes="Bold"/>
+                    <Label Grid.Row="1" Grid.Column="0" Text="BFP Trucks:" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="1" Grid.Column="1" Keyboard="Numeric" Text="{Binding FireTrucksResponding, Mode=TwoWay}" Placeholder="No of BFP Trucks"/>
+                    <Label Grid.Row="2" Grid.Column="0" Text="Ambulance:" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="2" Grid.Column="1" Keyboard="Numeric" Text="{Binding AmbulancesResponding, Mode=TwoWay}" Placeholder="No of Ambulance"/>
+                    <Label Grid.Row="3" Grid.Column="0" Text="Auxiliary:" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="3" Grid.Column="1" Keyboard="Numeric" Text="{Binding AuxiliaryVehiclesResponding, Mode=TwoWay}" Placeholder="No of Auxiliary Responders"/>
+                </Grid>
+            </Border>
+            <Button Text="Save Specific Details" Command="{Binding SaveSpecificDetailsCommand}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

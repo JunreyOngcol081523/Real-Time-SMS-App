@@ -9,6 +9,8 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Color x:Key="PageBackgroundLight">#FFFFFF</Color>
+            <Color x:Key="PageBackgroundDark">#121212</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

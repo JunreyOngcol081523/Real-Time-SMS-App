@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Real_Time_SMS_App.GeneralInfoPage"
+             xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             Title="General Info Page">
+    <ScrollView>
+        <VerticalStackLayout Padding="10" >
+            <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
+                <Grid RowSpacing="5" RowDefinitions="Auto,Auto">
+                    <Label Text="Report Type:" VerticalTextAlignment="Start" Grid.Row="0"/>
+                    <Picker ItemsSource="{Binding TypeOfReport}" SelectedItem="{Binding SelectedReportType, Mode=TwoWay}" Grid.Row="1"/>
+                </Grid>
+            </Border>
+
+            <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
+                <Grid RowDefinitions="18,Auto,Auto,Auto" ColumnDefinitions="*,*" ColumnSpacing="3" RowSpacing="3">
+                    <Label Text="Fire Station (FS):" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                    <Entry Placeholder="Engine Name" Grid.Row="1" Grid.Column="0" Text="{Binding EngineName, Mode=TwoWay}"/>
+                    <Entry Placeholder="Shift on-duty" Grid.Row="1" Grid.Column="1" Text="{Binding ShiftOnDuty, Mode=TwoWay}"/>
+                    <Entry Placeholder="Name of Fire Station" Grid.Row="2" Grid.Column="0" Text="{Binding FireStationName, Mode=TwoWay}"/>
+                    <Entry Placeholder="Address" Grid.Row="2" Grid.Column="1" Text="{Binding StationAddress}"/>
+                    <Grid Grid.Row="3" Grid.Column="0">
+                        <Label Text="Region"/>
+                        <Picker ItemsSource="{Binding Region}" SelectedItem="{Binding SelectedRegion, Mode=TwoWay}" FontSize="10"/>
+                    </Grid>
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <Label Text="Province"/>
+                        <Picker ItemsSource="{Binding Provinces}" SelectedItem="{Binding SelectedProvince, Mode=TwoWay}" FontSize="10"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+
+            <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
+                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
+                    <Label Text="Type of Operation:" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" WidthRequest="125" HorizontalTextAlignment="Start"/>
+                    <Picker ItemsSource="{Binding IncidentTypes}" SelectedItem="{Binding SelectedIncidentType, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" HorizontalOptions="Fill"/>
+                    <Entry Placeholder="Place of Occurence" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding PlaceOfOccurrence, Mode=TwoWay}"/>
+                </Grid>
+            </Border>
+
+            
+
+            
+            <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10"  StrokeShape="RoundRectangle 10">
+                <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*" Margin="0,0,0,10" ColumnSpacing="5" RowSpacing="5">
+                    <Label Text="Date and Time Reported" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                    <DatePicker Date="{Binding DateReported}" Grid.Row="1" Grid.Column="0"/>
+                    <TimePicker Time="{Binding TimeReported}" Grid.Row="1" Grid.Column="1"/>
+                    <Entry Text = "{Binding DateTimeReported, Mode=TwoWay}" Placeholder="DT Reported"  Grid.Row="2" Grid.Column="0" IsReadOnly="True"/>
+                    <Button Text="Capture Date and Time" Grid.Row="2" Grid.Column="1" FontSize="10" Command="{Binding CaptureDateTimeReportedCommand}"/>
+                </Grid>
+            </Border>
+
+            <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10"  StrokeShape="RoundRectangle 10">
+                <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*" Margin="0,0,0,10" ColumnSpacing="5" RowSpacing="5">
+                    <Label Text="Date and Time Engine Dispatched" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                    <DatePicker Date="{Binding DateEngineDispatched}" Grid.Row="1" Grid.Column="0"/>
+                    <TimePicker Time="{Binding TimeEngineDispatched}" Grid.Row="1" Grid.Column="1"/>
+                    <Entry Text = "{Binding DateTimeEngineDispatched, Mode=TwoWay}" Placeholder="DT Engine Dispatched"  Grid.Row="2" Grid.Column="0" IsReadOnly="True"/>
+                    <Button Text="Capture Date and Time" Grid.Row="2" Grid.Column="1" FontSize="10" Command="{Binding CaptureDateTimeEngineDispatchedCommand}"/>
+                </Grid>
+            </Border>
+
+            <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10"  StrokeShape="RoundRectangle 10">
+                <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*" Margin="0,0,0,10" ColumnSpacing="5" RowSpacing="5">
+                    <Label Text="Date and Time Engine Arrived" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                    <DatePicker Date="{Binding DateEngineArrived}" Grid.Row="1" Grid.Column="0"/>
+                    <TimePicker Time="{Binding TimeEngineArrived}" Grid.Row="1" Grid.Column="1"/>
+                    <Entry Text = "{Binding DateTimeEngineArrived, Mode=TwoWay}" Placeholder="DT Engine Arrived"  Grid.Row="2" Grid.Column="0" IsReadOnly="True"/>
+                    <Button Text="Capture Date and Time" Grid.Row="2" Grid.Column="1" FontSize="10" Command="{Binding CaptureDateTimeEngineArrivedCommand}"/>
+                </Grid>
+            </Border>
+            <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
+                <Grid RowSpacing="5" RowDefinitions="Auto,Auto">
+                    
+                    <Entry Text="{Binding ResponseTime}" IsReadOnly="True" Grid.Row="0" Placeholder="Response Time"/>
+                    <Entry Text="{Binding DistanceToIncidentLocation, Mode=TwoWay}" Grid.Row="1" Keyboard="Numeric" Placeholder="Distance to incident location"/>
+                </Grid>
+            </Border>
+            <Button Text="Save Info" Command="{Binding SaveGeneralInfoCommand}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using System.Text.Json;
 
 namespace Real_Time_SMS_App.ViewModels
@@ -22,6 +23,12 @@ namespace Real_Time_SMS_App.ViewModels
         [ObservableProperty] private string contactNumber;
         [ObservableProperty] private string sender;
         [ObservableProperty] private bool isSaveChecked;
+        [ObservableProperty]
+        private ObservableCollection<string> alarmStatusOptions = new()
+        {
+            "1st Alarm", "2nd Alarm", "3rd Alarm", "4th Alarm",
+            "Task Force Alpha", "Task Force Bravo", "General Alarm"
+        };
         public InitialInfoViewModel()
         {
             LoadDefaults();

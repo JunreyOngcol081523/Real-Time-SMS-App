@@ -47,7 +47,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" BackgroundColor="#ffffff" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
@@ -68,7 +68,13 @@
 	  <None Remove="Resources\AppIcon\contacts.png" />
 	  <None Remove="Resources\AppIcon\i.png" />
 	  <None Remove="Resources\AppIcon\p.png" />
+	  <None Remove="Resources\AppIcon\sms.png" />
+	  <None Remove="Resources\AppIcon\smsappicon.png" />
+	  <None Remove="Resources\Images\completeinfo.png" />
 	  <None Remove="Resources\Images\contacts.png" />
+	  <None Remove="Resources\Images\initialinfo.png" />
+	  <None Remove="Resources\Images\progressinfo.png" />
+	  <None Remove="Resources\Images\sms.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -82,15 +88,18 @@
 	  <MauiXaml Update="ContactPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="GeneralInfoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="InitialInfoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">
-	  <PackageReference Include="Catel.MVVM">
-	    <Version>6.1.4</Version>
-	  </PackageReference>
+	  <MauiXaml Update="SendReportPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="SpecificDetailsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

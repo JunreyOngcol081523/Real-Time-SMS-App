@@ -5,8 +5,10 @@
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(InitialInfoPage), typeof(InitialInfoPage));
+            Routing.RegisterRoute(nameof(SendReportPage), typeof(SendReportPage));
             Routing.RegisterRoute(nameof(ContactPage), typeof(ContactPage));
+            Routing.RegisterRoute(nameof(GeneralInfoPage), typeof(GeneralInfoPage));
+            Routing.RegisterRoute(nameof(SpecificDetailsPage), typeof(SpecificDetailsPage));
         }
     }
 }

@@ -4,69 +4,40 @@
              xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
              x:Class="Real_Time_SMS_App.MainPage">
 
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            <Image
-                Source="sms.png"
-                HeightRequest="150"
-                Aspect="AspectFit"
-                 />
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <Image Source="sms.png" HeightRequest="80" HorizontalOptions="Center" />
 
-            <Label
-                Text="Real Time SMS Reporting"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level5" />
+        <Label Text="Real Time SMS Reporting"
+               FontSize="32"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="Center"
+               HorizontalOptions="Center"
+               Margin="0,10,0,20" 
+               Style="{StaticResource CardText}"/>
 
-        <Grid RowDefinitions="*,*" ColumnDefinitions="*,*" Padding="10" RowSpacing="10" ColumnSpacing="10">
+        <Grid RowDefinitions="Auto" ColumnDefinitions="1*,1*" RowSpacing="20" ColumnSpacing="20" >
+            <!-- Initial Info -->
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource HomeCard}">
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image Source="sendblue.png" HeightRequest="40" />
+                    <Label Text="Send SMS Report" Style="{StaticResource CardText}" />
+                </VerticalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SendReportCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
 
-            <!-- Top-left (Initial Info) -->
-            <Grid Grid.Row="0" Grid.Column="0" BackgroundColor="LightBlue">
-                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
-                    <Image Source="initialinfo.png" HeightRequest="50" WidthRequest="50"/>
-                    <Label Text="Initial" TextColor="Black" VerticalTextAlignment="Center"/>
-                </HorizontalStackLayout>
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding InitialCommand}" />
-                </Grid.GestureRecognizers>
-            </Grid>
-
-            <!-- Top-right (Progress Info) -->
-            <Grid Grid.Row="0" Grid.Column="1" BackgroundColor="LightGreen">
-                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
-                    <Image Source="progressinfo.png" HeightRequest="50" WidthRequest="50"/>
-                    <Label Text="Progress" TextColor="Black" VerticalTextAlignment="Center"/>
-                </HorizontalStackLayout>
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ProgressCommand}" />
-                </Grid.GestureRecognizers>
-            </Grid>
-
-            <!-- Bottom-left (Complete Info) -->
-            <Grid Grid.Row="1" Grid.Column="0" BackgroundColor="LightCoral">
-                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
-                    <Image Source="completeinfo.png" HeightRequest="50" WidthRequest="50"/>
-                    <Label Text="Complete" TextColor="Black" VerticalTextAlignment="Center"/>
-                </HorizontalStackLayout>
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding CompleteCommand}" />
-                </Grid.GestureRecognizers>
-            </Grid>
-
-            <!-- Bottom-right (Contacts) -->
-            <Grid Grid.Row="1" Grid.Column="1" BackgroundColor="LightGoldenrodYellow">
-                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
-                    <Image Source="contacts.png" HeightRequest="50" WidthRequest="50"/>
-                    <Label Text="Contacts" TextColor="Black" VerticalTextAlignment="Center"/>
-                </HorizontalStackLayout>
-                <Grid.GestureRecognizers>
+            <!-- Contacts -->
+            <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource HomeCard}">
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image Source="contacts.png" HeightRequest="40" />
+                    <Label Text="Contacts" Style="{StaticResource CardText}" />
+                </VerticalStackLayout>
+                <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ContactsCommand}" />
-                </Grid.GestureRecognizers>
-            </Grid>
-
+                </Border.GestureRecognizers>
+            </Border>
         </Grid>
-
-
     </VerticalStackLayout>
 
 
