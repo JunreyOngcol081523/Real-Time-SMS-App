@@ -30,6 +30,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<ContactViewModel>();
 		builder.Services.AddTransient<GeneralInfoPage>();
 		builder.Services.AddTransient<SpecificDetailsPage>();
+		builder.Services.AddTransient<OperationalDetailsPage>();
+		builder.Services.AddTransient<CasualtyDetailsPage>();
         return builder.Build();
 	}
 }

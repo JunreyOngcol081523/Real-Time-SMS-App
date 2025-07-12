@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Real_Time_SMS_App.CasualtyDetailsPage"
+             xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             Title="Casualty Details Page">
+    <VerticalStackLayout  Padding="5" >
+        <Label 
+            Text="Casualty Details"
+            FontSize="20"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            Margin="0,0,0,10"/>
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="5">
+            <Grid Grid.Row="0">
+                <Border Style="{StaticResource HomeCard}" HeightRequest="210">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="50,170,*,60">
+                        <Label Grid.Row="0" Grid.Column="0" Text="Type:" VerticalTextAlignment="Center"/>
+                        <Picker Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding CasualtyType}" SelectedItem="{Binding SelectedCasualtyType}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Text="Name:" VerticalTextAlignment="Center"/>
+                        <Entry Grid.Row="1" Grid.Column="1" Placeholder="Full Name" Text="{Binding CasualtyName}"/>
+                        <Label Grid.Row="1" Grid.Column="2" Text="Age:" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+                        <Entry Grid.Row="1" Grid.Column="3" VerticalTextAlignment="Center" Keyboard="Numeric" Text="{Binding CasualtyAge}"/>
+                        <Label Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="Cause:"/>
+                        <Entry Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Placeholder="Cause of casualty" Text="{Binding CasualtyCause}"/>
+                        <Label Grid.Row="3" Grid.Column="0" Text="Person:" VerticalTextAlignment="Center" />
+                        <Entry Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Placeholder="BFP/Civilian/Auxiliary" Text="{Binding CasualtyPerson}"/>
+                        <Button Grid.Row="3" Grid.Column="3" ImageSource="plus.png" Command="{Binding AddToCasualtyListCommand}" HeightRequest="50" BackgroundColor="Transparent" BorderColor="Transparent" WidthRequest="100"/>
+                    </Grid>
+                </Border>
+            </Grid>
+            <Grid RowDefinitions="Auto,Auto" Grid.Row="1">
+                <Border Style="{StaticResource HomeCard}" HeightRequest="250">
+                    <ScrollView>
+                        <CollectionView ItemsSource="{Binding GroupedCasualtyList}" IsGrouped="True">
+
+                            <!-- Group header -->
+                            <CollectionView.GroupHeaderTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="Auto,*,Auto" BackgroundColor="#eeeeee" Padding="8">
+                                        <Label Grid.Column="0" Text="{Binding Type}" FontAttributes="Bold" VerticalTextAlignment="Center" FontSize="16" TextColor="Black"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.GroupHeaderTemplate>
+
+                            <!-- Item template -->
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="8">
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="{Binding Name}" />
+                                            <Label Text="," />
+                                            <Label Text="{Binding Age}" />
+                                            <Label Text="," />
+                                            <Label Text="{Binding Person}" />
+                                            <Label Text="," />
+                                            <Label Text="{Binding Cause}" />
+                                        </HorizontalStackLayout>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+                    </ScrollView>
+                </Border>
+                <Button Grid.Row="1" Text="Clear" Command="{Binding ClearCasualtyListCommand}" BackgroundColor="Red" TextColor="White"/>
+                
+            </Grid>
+            <Grid RowDefinitions="*,*" Grid.Row="2" RowSpacing="5">
+                <Button Grid.Row="0" Text="Save Casualty Details" Command="{Binding SaveCasualtyListCommand}" BackgroundColor="#E67E22" HeightRequest="50"/>
+                <Button Grid.Row="1" Text="Back" Command="{Binding BackCommand}"/>
+            </Grid>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

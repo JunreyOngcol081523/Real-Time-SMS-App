@@ -4,8 +4,10 @@
              x:Class="Real_Time_SMS_App.GeneralInfoPage"
              xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
              Title="General Info Page">
+    
     <ScrollView>
         <VerticalStackLayout Padding="10" >
+
             <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
                 <Grid RowSpacing="5" RowDefinitions="Auto,Auto">
                     <Label Text="Report Type:" VerticalTextAlignment="Start" Grid.Row="0"/>
@@ -40,16 +42,16 @@
                 </Grid>
             </Border>
 
-            
 
-            
+
+
             <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10"  StrokeShape="RoundRectangle 10">
                 <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*" Margin="0,0,0,10" ColumnSpacing="5" RowSpacing="5">
                     <Label Text="Date and Time Reported" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
                     <DatePicker Date="{Binding DateReported}" Grid.Row="1" Grid.Column="0"/>
                     <TimePicker Time="{Binding TimeReported}" Grid.Row="1" Grid.Column="1"/>
                     <Entry Text = "{Binding DateTimeReported, Mode=TwoWay}" Placeholder="DT Reported"  Grid.Row="2" Grid.Column="0" IsReadOnly="True"/>
-                    <Button Text="Capture Date and Time" Grid.Row="2" Grid.Column="1" FontSize="10" Command="{Binding CaptureDateTimeReportedCommand}"/>
+                    <Button Text="Capture Date and Time" Grid.Row="2" Grid.Column="1" FontSize="10" Command="{Binding CaptureDateTimeReportedCommand}" BackgroundColor="#E67E22"/>
                 </Grid>
             </Border>
 
@@ -59,7 +61,7 @@
                     <DatePicker Date="{Binding DateEngineDispatched}" Grid.Row="1" Grid.Column="0"/>
                     <TimePicker Time="{Binding TimeEngineDispatched}" Grid.Row="1" Grid.Column="1"/>
                     <Entry Text = "{Binding DateTimeEngineDispatched, Mode=TwoWay}" Placeholder="DT Engine Dispatched"  Grid.Row="2" Grid.Column="0" IsReadOnly="True"/>
-                    <Button Text="Capture Date and Time" Grid.Row="2" Grid.Column="1" FontSize="10" Command="{Binding CaptureDateTimeEngineDispatchedCommand}"/>
+                    <Button Text="Capture Date and Time" Grid.Row="2" Grid.Column="1" FontSize="10" Command="{Binding CaptureDateTimeEngineDispatchedCommand}" BackgroundColor="#E67E22"/>
                 </Grid>
             </Border>
 
@@ -69,17 +71,21 @@
                     <DatePicker Date="{Binding DateEngineArrived}" Grid.Row="1" Grid.Column="0"/>
                     <TimePicker Time="{Binding TimeEngineArrived}" Grid.Row="1" Grid.Column="1"/>
                     <Entry Text = "{Binding DateTimeEngineArrived, Mode=TwoWay}" Placeholder="DT Engine Arrived"  Grid.Row="2" Grid.Column="0" IsReadOnly="True"/>
-                    <Button Text="Capture Date and Time" Grid.Row="2" Grid.Column="1" FontSize="10" Command="{Binding CaptureDateTimeEngineArrivedCommand}"/>
+                    <Button Text="Capture Date and Time" Grid.Row="2" Grid.Column="1" FontSize="10" Command="{Binding CaptureDateTimeEngineArrivedCommand}" BackgroundColor="#E67E22"/>
                 </Grid>
             </Border>
             <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
                 <Grid RowSpacing="5" RowDefinitions="Auto,Auto">
-                    
+
                     <Entry Text="{Binding ResponseTime}" IsReadOnly="True" Grid.Row="0" Placeholder="Response Time"/>
                     <Entry Text="{Binding DistanceToIncidentLocation, Mode=TwoWay}" Grid.Row="1" Keyboard="Numeric" Placeholder="Distance to incident location"/>
                 </Grid>
             </Border>
-            <Button Text="Save Info" Command="{Binding SaveGeneralInfoCommand}"/>
-        </VerticalStackLayout>
-    </ScrollView>
+            <Button Text="Save Info" Command="{Binding SaveGeneralInfoCommand}" Margin="0,0,0,5" BackgroundColor="#E67E22"/>
+                    <Button Text="Back" Command="{Binding BackCommand}"/>
+
+
+    </VerticalStackLayout>
+</ScrollView>
+
 </ContentPage>

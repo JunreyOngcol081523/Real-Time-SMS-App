@@ -35,6 +35,22 @@ namespace Real_Time_SMS_App.ViewModels
 
             }
         }
+        [RelayCommand]
+        private async Task About()
+        {
+            //await NavigateToPage(nameof(AboutPage));
+        }
+        [RelayCommand]
+        private async Task ClearPreferences()
+        {
+            Preferences.Clear();
+            await Shell.Current.DisplayAlert("Info", "Old Data Cleared", "OK");
+        }
+        [RelayCommand]
+        private async Task Back()
+        {
+            await Shell.Current.GoToAsync("..");
+        }
 
     }
 }

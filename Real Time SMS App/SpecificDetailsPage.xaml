@@ -33,7 +33,8 @@
                     <Entry Grid.Row="3" Grid.Column="1" Keyboard="Numeric" Text="{Binding AuxiliaryVehiclesResponding, Mode=TwoWay}" Placeholder="No of Auxiliary Responders"/>
                 </Grid>
             </Border>
-            <Button Text="Save Specific Details" Command="{Binding SaveSpecificDetailsCommand}"/>
+            <Button ImageSource="persons.png" HeightRequest="50" Text="Save Specific Details" Command="{Binding SaveSpecificDetailsCommand}" BackgroundColor="#E67E22" Margin="0,0,0,10"/>
+            <Button Text="Back" Command="{Binding BackCommand}"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

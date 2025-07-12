@@ -4,9 +4,11 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Real_Time_SMS_App.ViewModels
@@ -15,9 +17,11 @@ namespace Real_Time_SMS_App.ViewModels
     {
         public SendReportViewModel()
         {
-            // Load saved general info when the view model is initialized
+            
             LoadGeneralInfo();
             LoadSpecificDetails();
+            LoadOperationalStatus();
+            LoadCasualtyList();
         }
         [ObservableProperty]
         private ObservableCollection<string> typeOfReport = new()
@@ -145,19 +149,46 @@ namespace Real_Time_SMS_App.ViewModels
         //operational details tab
         //operational status (status)
         [ObservableProperty]
-        private string firstAlarmStatus;
+        private string firstAlarmDeclaredBy;
         [ObservableProperty]
-        private string secondAlarmStatus;
+        private TimeSpan firstAlarmTime;
+
         [ObservableProperty]
-        private string thirdAlarmStatus;
+        private string secondAlarmDeclaredBy;
         [ObservableProperty]
-        private string fourthAlarmStatus;
+        private TimeSpan secondAlarmTime;
+
         [ObservableProperty]
-        private string taskForceAlphaStatus;
+        private string thirdAlarmDeclaredBy;
         [ObservableProperty]
-        private string taskForceBravoStatus;
+        private TimeSpan thirdAlarmTime;
+
         [ObservableProperty]
-        private string generalAlarmStatus;
+        private string fourthAlarmDeclaredBy;
+        [ObservableProperty]
+        private TimeSpan fourthAlarmTime;
+
+        [ObservableProperty]
+        private string taskForceAlphaDeclaredBy;
+        [ObservableProperty]
+        private TimeSpan taskForceAlphaTime;
+
+        [ObservableProperty]
+        private string taskForceBravoDeclaredBy;
+        [ObservableProperty]
+        private TimeSpan taskForceBravoTime;
+
+        [ObservableProperty]
+        private string generalAlarmDeclaredBy;
+        [ObservableProperty]
+        private TimeSpan generalAlarmTime;
+        [ObservableProperty] private bool firstAlarmChecked;
+        [ObservableProperty] private bool secondAlarmChecked;
+        [ObservableProperty] private bool thirdAlarmChecked;
+        [ObservableProperty] private bool fourthAlarmChecked;
+        [ObservableProperty] private bool taskForceAlphaAlarmChecked;
+        [ObservableProperty] private bool taskForceBravoAlarmChecked;
+        [ObservableProperty] private bool generalAlarmChecked;
 
         // casualty details tab
         [ObservableProperty]
@@ -168,6 +199,23 @@ namespace Real_Time_SMS_App.ViewModels
         private string numberOfFatalities;
         [ObservableProperty]
         private string numberOfMissing;
+        [ObservableProperty]
+        private ObservableCollection<string> casualtyType = new()
+        {
+            "Injured","Fatality","Missing"
+        };
+        [ObservableProperty]
+        private string selectedCasualtyType;
+        [ObservableProperty]
+        private string casualtyName;
+        [ObservableProperty]
+        private string casualtyAge;
+        [ObservableProperty]
+        private string casualtyCause;
+        [ObservableProperty]
+        private string casualtyPerson;//BFP,Civilian,Auxiliary
+        public ObservableCollection<Casualty> CasualtyList { get; } = new();
+        public ObservableCollection<CasualtyGroup> GroupedCasualtyList { get; } = new();
 
         //investigator's info tab
         [ObservableProperty]
@@ -207,12 +255,12 @@ namespace Real_Time_SMS_App.ViewModels
         [RelayCommand]
         private async Task OperationalDetailsPage()
         {
-            //await OpenPage(nameof(null));
+            await OpenPage(nameof(OperationalDetailsPage));
         }
         [RelayCommand]
         private async Task CasualtyDetailsPage()
         {
-            //await OpenPage(nameof(null));
+            await OpenPage(nameof(CasualtyDetailsPage));
         }
         [RelayCommand]
         private async Task InvestigatorInfoPage()
@@ -223,6 +271,16 @@ namespace Real_Time_SMS_App.ViewModels
         private async Task LaunchSMSApp()
         {
 
+        }
+        [RelayCommand]
+        private async Task Back()
+        {
+            await Shell.Current.GoToAsync("..");
+        }
+        [RelayCommand]
+        private async Task BackToMain()
+        {
+            await Shell.Current.GoToAsync("//MainPage");
         }
 
         //---------------------save general info---------------------//
@@ -437,6 +495,250 @@ namespace Real_Time_SMS_App.ViewModels
             FireTrucksResponding = Preferences.Get(nameof(FireTrucksResponding), string.Empty);
             AmbulancesResponding = Preferences.Get(nameof(AmbulancesResponding), string.Empty);
             AuxiliaryVehiclesResponding = Preferences.Get(nameof(AuxiliaryVehiclesResponding), string.Empty);
+        }
+
+        //------------------------save operational details------------------------//
+        [RelayCommand]
+        private async Task SaveOperationalStatus()
+        {
+            // Clear all previously saved keys
+            Preferences.Clear();
+
+            // Save only if checked
+            if (FirstAlarmChecked)
+            {
+                Preferences.Set(nameof(FirstAlarmDeclaredBy), FirstAlarmDeclaredBy ?? string.Empty);
+                Preferences.Set(nameof(FirstAlarmTime), FirstAlarmTime.ToString());
+                Preferences.Set(nameof(FirstAlarmChecked), true);
+            }
+
+            if (SecondAlarmChecked)
+            {
+                Preferences.Set(nameof(SecondAlarmDeclaredBy), SecondAlarmDeclaredBy ?? string.Empty);
+                Preferences.Set(nameof(SecondAlarmTime), SecondAlarmTime.ToString());
+                Preferences.Set(nameof(SecondAlarmChecked), true);
+            }
+
+            if (ThirdAlarmChecked)
+            {
+                Preferences.Set(nameof(ThirdAlarmDeclaredBy), ThirdAlarmDeclaredBy ?? string.Empty);
+                Preferences.Set(nameof(ThirdAlarmTime), ThirdAlarmTime.ToString());
+                Preferences.Set(nameof(ThirdAlarmChecked), true);
+            }
+
+            if (FourthAlarmChecked)
+            {
+                Preferences.Set(nameof(FourthAlarmDeclaredBy), FourthAlarmDeclaredBy ?? string.Empty);
+                Preferences.Set(nameof(FourthAlarmTime), FourthAlarmTime.ToString());
+                Preferences.Set(nameof(FourthAlarmChecked), true);
+            }
+
+            if (TaskForceAlphaAlarmChecked)
+            {
+                Preferences.Set(nameof(TaskForceAlphaDeclaredBy), TaskForceAlphaDeclaredBy ?? string.Empty);
+                Preferences.Set(nameof(TaskForceAlphaTime), TaskForceAlphaTime.ToString());
+                Preferences.Set(nameof(TaskForceAlphaAlarmChecked), true);
+            }
+
+            if (TaskForceBravoAlarmChecked)
+            {
+                Preferences.Set(nameof(TaskForceBravoDeclaredBy), TaskForceBravoDeclaredBy ?? string.Empty);
+                Preferences.Set(nameof(TaskForceBravoTime), TaskForceBravoTime.ToString());
+                Preferences.Set(nameof(TaskForceBravoAlarmChecked), true);
+            }
+
+            if (GeneralAlarmChecked)
+            {
+                Preferences.Set(nameof(GeneralAlarmDeclaredBy), GeneralAlarmDeclaredBy ?? string.Empty);
+                Preferences.Set(nameof(GeneralAlarmTime), GeneralAlarmTime.ToString());
+                Preferences.Set(nameof(GeneralAlarmChecked), true);
+            }
+
+            await Shell.Current.DisplayAlert("Success", "Operational status saved.", "OK");
+        }
+
+
+        //------------------------load operational details------------------------//
+        private void LoadOperationalStatus()
+        {
+            FirstAlarmChecked = Preferences.Get(nameof(FirstAlarmChecked), false);
+            if (FirstAlarmChecked)
+            {
+                FirstAlarmDeclaredBy = Preferences.Get(nameof(FirstAlarmDeclaredBy), string.Empty);
+                FirstAlarmTime = TimeSpan.TryParse(Preferences.Get(nameof(FirstAlarmTime), ""), out var t1) ? t1 : TimeSpan.Zero;
+            }
+
+            SecondAlarmChecked = Preferences.Get(nameof(SecondAlarmChecked), false);
+            if (SecondAlarmChecked)
+            {
+                SecondAlarmDeclaredBy = Preferences.Get(nameof(SecondAlarmDeclaredBy), string.Empty);
+                SecondAlarmTime = TimeSpan.TryParse(Preferences.Get(nameof(SecondAlarmTime), ""), out var t2) ? t2 : TimeSpan.Zero;
+            }
+
+            ThirdAlarmChecked = Preferences.Get(nameof(ThirdAlarmChecked), false);
+            if (ThirdAlarmChecked)
+            {
+                ThirdAlarmDeclaredBy = Preferences.Get(nameof(ThirdAlarmDeclaredBy), string.Empty);
+                ThirdAlarmTime = TimeSpan.TryParse(Preferences.Get(nameof(ThirdAlarmTime), ""), out var t3) ? t3 : TimeSpan.Zero;
+            }
+
+            FourthAlarmChecked = Preferences.Get(nameof(FourthAlarmChecked), false);
+            if (FourthAlarmChecked)
+            {
+                FourthAlarmDeclaredBy = Preferences.Get(nameof(FourthAlarmDeclaredBy), string.Empty);
+                FourthAlarmTime = TimeSpan.TryParse(Preferences.Get(nameof(FourthAlarmTime), ""), out var t4) ? t4 : TimeSpan.Zero;
+            }
+
+            TaskForceAlphaAlarmChecked = Preferences.Get(nameof(TaskForceAlphaAlarmChecked), false);
+            if (TaskForceAlphaAlarmChecked)
+            {
+                TaskForceAlphaDeclaredBy = Preferences.Get(nameof(TaskForceAlphaDeclaredBy), string.Empty);
+                TaskForceAlphaTime = TimeSpan.TryParse(Preferences.Get(nameof(TaskForceAlphaTime), ""), out var ta) ? ta : TimeSpan.Zero;
+            }
+
+            TaskForceBravoAlarmChecked = Preferences.Get(nameof(TaskForceBravoAlarmChecked), false);
+            if (TaskForceBravoAlarmChecked)
+            {
+                TaskForceBravoDeclaredBy = Preferences.Get(nameof(TaskForceBravoDeclaredBy), string.Empty);
+                TaskForceBravoTime = TimeSpan.TryParse(Preferences.Get(nameof(TaskForceBravoTime), ""), out var tb) ? tb : TimeSpan.Zero;
+            }
+
+            GeneralAlarmChecked = Preferences.Get(nameof(GeneralAlarmChecked), false);
+            if (GeneralAlarmChecked)
+            {
+                GeneralAlarmDeclaredBy = Preferences.Get(nameof(GeneralAlarmDeclaredBy), string.Empty);
+                GeneralAlarmTime = TimeSpan.TryParse(Preferences.Get(nameof(GeneralAlarmTime), ""), out var tg) ? tg : TimeSpan.Zero;
+            }
+        }
+
+        //----------------------add casualty----------------------//
+        [RelayCommand]
+        private void AddToCasualtyList()
+        {
+
+            if (!int.TryParse(CasualtyAge, out int age))
+                age = 0; // Or show validation error
+
+            var newEntry = new Casualty
+            {
+                Type = SelectedCasualtyType,
+                Name = CasualtyName,
+                Age = age,
+                Person = CasualtyPerson,
+                Cause = CasualtyCause
+            };
+
+            CasualtyList.Add(newEntry);
+            GroupCasualties();
+            // Optional: Clear fields after add
+            CasualtyName = string.Empty;
+            CasualtyAge = string.Empty;
+            CasualtyCause = string.Empty;
+            CasualtyPerson = string.Empty;
+            SelectedCasualtyType = null;
+        }
+        //----------------------group casualties----------------------//
+        private void GroupCasualties()
+        {
+            var grouped = CasualtyList
+                .GroupBy(c => c.Type)
+                .OrderBy(g => g.Key)
+                .Select(g => new CasualtyGroup(g.Key, g))
+                .ToList();
+
+            GroupedCasualtyList.Clear();
+            foreach (var group in grouped)
+                GroupedCasualtyList.Add(group);
+        }
+        //----------------------clear casualty list----------------------//
+        [RelayCommand]
+        private void ClearCasualtyList()
+        {
+            CasualtyList.Clear();
+            GroupedCasualtyList.Clear();
+            CasualtyName = string.Empty;
+            CasualtyAge = string.Empty;
+            CasualtyCause = string.Empty;
+            CasualtyPerson = string.Empty;
+            SelectedCasualtyType = null;
+            GroupCasualties();
+        }
+
+        //-------------saving casualty details-----------------//
+        [RelayCommand]
+        public async Task SaveCasualtyList()
+        {
+            // Generate the grouped summary
+            string summary = GetCasualtyListSummary();
+
+            // Show confirmation alert with Yes/No buttons
+            bool confirm = await Shell.Current.DisplayAlert("Save Casualty List?", summary, "Yes", "No");
+
+            if (confirm)
+            {
+                // User chose 'Yes' - proceed to save
+                var json = JsonSerializer.Serialize(CasualtyList);
+                Preferences.Set("CasualtyList", json);
+
+                await Shell.Current.DisplayAlert("Info","Casualty list saved successfully.", "OK");
+                Back();
+            }
+            else
+            {
+                // User chose 'No' - do nothing
+                System.Diagnostics.Debug.WriteLine("Save canceled.");
+            }
+        }
+
+        //----------------------get casualty list from preference----------------------//
+        public string GetCasualtyListSummary()
+        {
+            var sb = new StringBuilder();
+
+            var grouped = CasualtyList
+                .GroupBy(c => c.Type)
+                .OrderBy(g => g.Key);
+
+            foreach (var group in grouped)
+            {
+                sb.AppendLine($"{group.Key}: {group.Count()}");
+
+                foreach (var casualty in group)
+                {
+                    sb.AppendLine($"{casualty.Name}, {casualty.Age}, {casualty.Cause}, {casualty.Person}");
+                }
+
+                sb.AppendLine();
+            }
+
+            return sb.ToString().TrimEnd();
+        }
+        //----------------------load casualty list from preference----------------------//
+        public void LoadCasualtyList()
+        {
+            // Retrieve JSON from Preferences
+            var json = Preferences.Get("CasualtyList", string.Empty);
+
+            if (!string.IsNullOrWhiteSpace(json))
+            {
+                try
+                {
+                    // Deserialize to a list of Casualty objects
+                    var list = JsonSerializer.Deserialize<List<Casualty>>(json);
+
+                    // Clear existing list and repopulate
+                    CasualtyList.Clear();
+                    foreach (var item in list)
+                        CasualtyList.Add(item);
+
+                    // Regroup after loading
+                    GroupCasualties();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error loading casualties: {ex.Message}");
+                }
+            }
         }
 
 

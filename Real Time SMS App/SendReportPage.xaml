@@ -85,6 +85,8 @@
                     <TapGestureRecognizer Command="{Binding LaunchSMSAppCommand}" />
                 </Border.GestureRecognizers>
             </Border>
+            
         </Grid>
+        <Button Text="Back" Command="{Binding BackToMainCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

@@ -10,6 +10,15 @@
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="MainPage"
+        Icon="home.png"/>
+    <!--<ShellContent
+        Title="Admin Dashboard"
+
+        Icon="dashboard.png"/>
+    <ShellContent
+        Title="About"
+
+        Icon="information.png"/>-->
 
 </Shell>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             x:Class="Real_Time_SMS_App.OperationalDetailsPage"
+             Title="Operational Details Page">
+    
+    <ScrollView>
+        <VerticalStackLayout Padding="10">
+            <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
+                <Grid RowSpacing="5" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="50,60,*,80">
+                    <Label Grid.Row="0" Grid.Column="0" FontSize="20" FontAttributes="Bold" Grid.ColumnSpan="4" Text="Operational Status" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" FontSize="15" FontAttributes="Bold" Text="Raise" VerticalTextAlignment="Center"/>
+                    <Label Grid.Row="1" Grid.Column="1" FontSize="15" FontAttributes="Bold" Text="Status" VerticalTextAlignment="Center"/>
+                    <Label Grid.Row="1" Grid.Column="2" FontSize="15" FontAttributes="Bold" Text="Declared by" VerticalTextAlignment="Center"/>
+                    <Label Grid.Row="1" Grid.Column="3" FontSize="15" FontAttributes="Bold" Text="Time Declared" VerticalTextAlignment="Center"/>
+                    
+                    <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding FirstAlarmChecked}" />
+                    <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="1st Alarm" VerticalTextAlignment="Center" />
+                    <Entry Grid.Row="2" Grid.Column="2" Text="{Binding FirstAlarmDeclaredBy, Mode=TwoWay}" IsEnabled="{Binding FirstAlarmChecked}" />
+                    <TimePicker Grid.Row="2" Grid.Column="3" Time="{Binding FirstAlarmTime}" IsEnabled="{Binding FirstAlarmChecked}" />
+
+                    <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="{Binding SecondAlarmChecked}" />
+                    <Label Grid.Row="3" Grid.Column="1" Text="2nd Alarm:" VerticalTextAlignment="Center" />
+                    <Entry Grid.Row="3" Grid.Column="2" Text="{Binding SecondAlarmDeclaredBy, Mode=TwoWay}" IsEnabled="{Binding SecondAlarmChecked}" />
+                    <TimePicker Grid.Row="3" Grid.Column="3" Time="{Binding SecondAlarmTime}" IsEnabled="{Binding SecondAlarmChecked}" />
+
+                    <CheckBox Grid.Row="4" Grid.Column="0" IsChecked="{Binding ThirdAlarmChecked}" />
+                    <Label Grid.Row="4" Grid.Column="1" Text="3rd Alarm:" VerticalTextAlignment="Center" />
+                    <Entry Grid.Row="4" Grid.Column="2" Text="{Binding ThirdAlarmDeclaredBy, Mode=TwoWay}" IsEnabled="{Binding ThirdAlarmChecked}" />
+                    <TimePicker Grid.Row="4" Grid.Column="3" Time="{Binding ThirdAlarmTime}" IsEnabled="{Binding ThirdAlarmChecked}" />
+
+                    <CheckBox Grid.Row="5" Grid.Column="0" IsChecked="{Binding FourthAlarmChecked}" />
+                    <Label Grid.Row="5" Grid.Column="1" Text="4th Alarm:" VerticalTextAlignment="Center" />
+                    <Entry Grid.Row="5" Grid.Column="2" Text="{Binding FourthAlarmDeclaredBy, Mode=TwoWay}" IsEnabled="{Binding FourthAlarmChecked}" />
+                    <TimePicker Grid.Row="5" Grid.Column="3" Time="{Binding FourthAlarmTime}" IsEnabled="{Binding FourthAlarmChecked}" />
+
+                    <CheckBox Grid.Row="6" Grid.Column="0" IsChecked="{Binding TaskForceAlphaAlarmChecked}" />
+                    <Label Grid.Row="6" Grid.Column="1" Text="Task Force Alpha:" VerticalTextAlignment="Center" />
+                    <Entry Grid.Row="6" Grid.Column="2" Text="{Binding TaskForceAlphaDeclaredBy, Mode=TwoWay}" IsEnabled="{Binding TaskForceAlphaAlarmChecked}" />
+                    <TimePicker Grid.Row="6" Grid.Column="3" Time="{Binding TaskForceAlphaTime}" IsEnabled="{Binding TaskForceAlphaAlarmChecked}" />
+
+                    <CheckBox Grid.Row="7" Grid.Column="0" IsChecked="{Binding TaskForceBravoAlarmChecked}" />
+                    <Label Grid.Row="7" Grid.Column="1" Text="Task Force Bravo:" VerticalTextAlignment="Center" />
+                    <Entry Grid.Row="7" Grid.Column="2" Text="{Binding TaskForceBravoDeclaredBy, Mode=TwoWay}" IsEnabled="{Binding TaskForceBravoAlarmChecked}" />
+                    <TimePicker Grid.Row="7" Grid.Column="3" Time="{Binding TaskForceBravoTime}" IsEnabled="{Binding TaskForceBravoAlarmChecked}" />
+
+                    <CheckBox Grid.Row="8" Grid.Column="0" IsChecked="{Binding GeneralAlarmChecked}" />
+                    <Label Grid.Row="8" Grid.Column="1" Text="General Alarm:" VerticalTextAlignment="Center" />
+                    <Entry Grid.Row="8" Grid.Column="2" Text="{Binding GeneralAlarmDeclaredBy, Mode=TwoWay}" IsEnabled="{Binding GeneralAlarmChecked}" />
+                    <TimePicker Grid.Row="8" Grid.Column="3" Time="{Binding GeneralAlarmTime}" IsEnabled="{Binding GeneralAlarmChecked}" />
+
+
+                </Grid>
+            </Border>
+
+            <Button ImageSource="firetruck.png" HeightRequest="50" Text="Save Operational Details" Command="{Binding SaveOperationalStatusCommand}" BackgroundColor="#E67E22"/>
+            <Button Text="Back" Command="{Binding BackCommand}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -9,6 +9,8 @@
             Routing.RegisterRoute(nameof(ContactPage), typeof(ContactPage));
             Routing.RegisterRoute(nameof(GeneralInfoPage), typeof(GeneralInfoPage));
             Routing.RegisterRoute(nameof(SpecificDetailsPage), typeof(SpecificDetailsPage));
+            Routing.RegisterRoute(nameof(OperationalDetailsPage), typeof(OperationalDetailsPage));
+            Routing.RegisterRoute(nameof(CasualtyDetailsPage), typeof(CasualtyDetailsPage));
         }
     }
 }

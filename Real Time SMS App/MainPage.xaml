@@ -15,7 +15,7 @@
                Margin="0,10,0,20" 
                Style="{StaticResource CardText}"/>
 
-        <Grid RowDefinitions="Auto" ColumnDefinitions="1*,1*" RowSpacing="20" ColumnSpacing="20" >
+        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="1*,1*" RowSpacing="20" ColumnSpacing="20" >
             <!-- Initial Info -->
             <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource HomeCard}">
                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
@@ -35,6 +35,16 @@
                 </VerticalStackLayout>
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ContactsCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+            <!-- Clear -->
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource HomeCard}" HeightRequest="100">
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image Source="delete.png" HeightRequest="40" />
+                    <Label Text="Clear Old Data" Style="{StaticResource CardText}" />
+                </VerticalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ClearPreferencesCommand}" />
                 </Border.GestureRecognizers>
             </Border>
         </Grid>
