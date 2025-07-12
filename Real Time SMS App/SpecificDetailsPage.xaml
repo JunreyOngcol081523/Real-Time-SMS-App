@@ -3,9 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Real_Time_SMS_App.SpecificDetailsPage"
              xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMTAdmob"
              Title="Specific Details Page">
     <ScrollView>
         <VerticalStackLayout Padding="10">
+            <controls:MTAdView BackgroundColor="Transparent"
+                                AdsId="ca-app-pub-8158194714551266/8272231867"
+                                AdSize="AnchoredAdaptive"
+                                IsVisible="true"/>
             <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
                 <Grid RowSpacing="5" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,Auto">
                     <Label Grid.Row="0" Grid.Column="0" Text="Involved:" VerticalTextAlignment="Center"/>

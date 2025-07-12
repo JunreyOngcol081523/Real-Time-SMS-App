@@ -4,27 +4,17 @@
              x:Class="Real_Time_SMS_App.SendReportPage"
              xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
              xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMTAdmob"
-             Title="SendReportPage">
+             Title="Compose SMS">
     
     
     <VerticalStackLayout Padding="20" Spacing="20">
-
         <controls:MTAdView BackgroundColor="Transparent"
-                                           x:Name="sendreportAds"
-                                           AdsId="ca-app-pub-8158194714551266/8932106213"
-                                           AdSize="AnchoredAdaptive"
-                                           IsVisible="true"
-                                           />
-        <Label Text="Send SMS Report"
-               FontSize="32"
-               FontAttributes="Bold"
-               HorizontalTextAlignment="Center"
-               HorizontalOptions="Center"
-               Margin="0,10,0,10"
-               Style="{StaticResource CardText}" />
-
+                                x:Name="sendreportAds"
+                                AdsId="ca-app-pub-8158194714551266/8932106213"
+                                AdSize="AnchoredAdaptive"
+                                IsVisible="true"/>
         <Grid RowSpacing="10" ColumnSpacing="10"
-              RowDefinitions="Auto, Auto, Auto, Auto"
+              RowDefinitions="Auto, Auto, Auto, Auto,Auto"
               ColumnDefinitions="*,*">
 
             <!-- Row 0: 1 Border spanning 2 columns -->
@@ -91,7 +81,6 @@
                     <TapGestureRecognizer Command="{Binding LaunchSMSAppCommand}" />
                 </Border.GestureRecognizers>
             </Border>
-            
         </Grid>
         <Button Text="Back" Command="{Binding BackToMainCommand}"/>
     </VerticalStackLayout>

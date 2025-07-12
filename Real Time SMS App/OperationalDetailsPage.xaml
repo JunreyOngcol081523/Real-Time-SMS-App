@@ -3,10 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
              x:Class="Real_Time_SMS_App.OperationalDetailsPage"
+             xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMTAdmob"
              Title="Operational Details Page">
     
     <ScrollView>
         <VerticalStackLayout Padding="10">
+            <controls:MTAdView BackgroundColor="Transparent"
+                                AdsId="ca-app-pub-8158194714551266/9122279108"
+                                AdSize="AnchoredAdaptive"
+                                IsVisible="true"/>
             <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
                 <Grid RowSpacing="5" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto, Auto" ColumnDefinitions="50,60,*,80">
                     <Label Grid.Row="0" Grid.Column="0" FontSize="20" FontAttributes="Bold" Grid.ColumnSpan="4" Text="Operational Status" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
@@ -63,8 +68,14 @@
                 </Grid>
             </Border>
 
-            <Button ImageSource="firetruck.png" HeightRequest="50" Text="Save Operational Details" Command="{Binding SaveOperationalStatusCommand}" BackgroundColor="#E67E22"/>
+            <Button ImageSource="firetruck.png" 
+                    HeightRequest="50" 
+                    Text="Save Operational Details" 
+                    Command="{Binding SaveOperationalStatusCommand}" 
+                    BackgroundColor="#E67E22"
+                    Margin="0,0,0,5"/>
             <Button Text="Back" Command="{Binding BackCommand}"/>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

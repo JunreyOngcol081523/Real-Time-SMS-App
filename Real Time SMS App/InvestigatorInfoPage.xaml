@@ -3,8 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Real_Time_SMS_App.InvestigatorInfoPage"
              xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMTAdmob"
              Title="InvestigatorInfoPage">
     <VerticalStackLayout Padding="5">
+        <controls:MTAdView BackgroundColor="Transparent"
+                                AdsId="ca-app-pub-8158194714551266/1497303479"
+                                AdSize="AnchoredAdaptive"
+                                IsVisible="true"/>
         <Label 
             Text="Investigator's Info"
             FontSize="20"

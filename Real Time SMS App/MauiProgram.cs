@@ -1,4 +1,5 @@
 ﻿
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Plugin.MauiMTAdmob;
 using Real_Time_SMS_App.ViewModels;
@@ -12,13 +13,14 @@ public static class MauiProgram
 	{
 		var builder = MauiApp.CreateBuilder();
 		builder
-			.UseMauiApp<App>()
-            .UseMauiMTAdmob()
-            .ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            });
+                    .UseMauiApp<App>()
+                    .UseMauiMTAdmob()
+                    .UseMauiCommunityToolkit()
+                    .ConfigureFonts(fonts =>
+                    {
+                        fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                        fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    });
 
 #if DEBUG
 		builder.Logging.AddDebug();
@@ -34,6 +36,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<OperationalDetailsPage>();
 		builder.Services.AddTransient<CasualtyDetailsPage>();
 		builder.Services.AddTransient<InvestigatorInfoPage>();
+		builder.Services.AddTransient<AboutPage>();
         return builder.Build();
 	}
 }

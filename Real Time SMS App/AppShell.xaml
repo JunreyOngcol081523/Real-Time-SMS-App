@@ -15,10 +15,11 @@
     <!--<ShellContent
         Title="Admin Dashboard"
 
-        Icon="dashboard.png"/>
+        Icon="dashboard.png"/>-->
     <ShellContent
         Title="About"
-
-        Icon="information.png"/>-->
+        ContentTemplate="{DataTemplate local:AboutPage}"
+        Route="AboutPage"
+        Icon="information.png"/>
 
 </Shell>

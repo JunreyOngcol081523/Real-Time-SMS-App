@@ -12,6 +12,7 @@
             Routing.RegisterRoute(nameof(OperationalDetailsPage), typeof(OperationalDetailsPage));
             Routing.RegisterRoute(nameof(CasualtyDetailsPage), typeof(CasualtyDetailsPage));
             Routing.RegisterRoute(nameof(InvestigatorInfoPage), typeof(InvestigatorInfoPage));
+            Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
         }
     }
 }

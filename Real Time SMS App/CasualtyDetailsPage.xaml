@@ -3,9 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Real_Time_SMS_App.CasualtyDetailsPage"
              xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMTAdmob"
              Title="Casualty Details Page">
+    <ScrollView>
     <VerticalStackLayout  Padding="5" >
-        <Label 
+            <controls:MTAdView BackgroundColor="Transparent"
+                                AdsId="ca-app-pub-8158194714551266/2337378901"
+                                AdSize="AnchoredAdaptive"
+                                IsVisible="true"/>
+            <Label 
             Text="Casualty Details"
             FontSize="20"
             VerticalOptions="Center" 
@@ -72,4 +78,5 @@
             </Grid>
         </Grid>
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

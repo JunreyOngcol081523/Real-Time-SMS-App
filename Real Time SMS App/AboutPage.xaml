@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Real_Time_SMS_App.AboutPage"
+             Title="About"
+             xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20" HorizontalOptions="Center">
+
+            <!-- App Icon -->
+            <Image Source="sms.png"
+                   WidthRequest="100"
+                   HeightRequest="100"
+                   HorizontalOptions="Center" />
+
+            <!-- App Name -->
+            <Label Text="Real-Time SMS App"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   TextColor="Black"
+                   HorizontalOptions="Center" />
+
+            <!-- Tagline -->
+            <Label Text="Fast. Reliable. Fire Incident Reporting."
+                   FontSize="16"
+                   TextColor="Gray"
+                   HorizontalOptions="Center" />
+
+            <!-- App Description -->
+            <Border Stroke="#0070BA" StrokeThickness="1" HeightRequest="100"
+                Padding="10">
+                <Label Text="This mobile application allows fire stations to send real-time SMS reports, ensuring rapid communication and improved response coordination."
+                       FontSize="14"
+                       TextColor="Black" />
+            </Border>
+
+            <!-- Credits -->
+            <Border Style="{StaticResource HomeCard}" HeightRequest="210"
+                    Padding="10">
+                <Grid ColumnDefinitions="*,*">
+                    <Grid Grid.Column="0" RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="*">
+                        <Label Grid.Row="0" Text="Developer:" FontAttributes="Bold" FontSize="14" VerticalTextAlignment="Start"/>
+                        <Label Grid.Row="1" Text="Junrey B Ongcol" FontSize="18" VerticalTextAlignment="Center"/>
+                        <Label Grid.Row="2" Text="junreyongcol@gmail.com" FontAttributes="Italic" FontSize="10" TextColor="DarkSlateGray" VerticalTextAlignment="Start"/>
+                        <Image Grid.Row="3" Source="donate.png" HeightRequest="128" HorizontalOptions="Start"/>
+                    </Grid>
+                    <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="5">
+                        <Image Grid.Row="0" Source="gcash.png" HeightRequest="50"/>
+                        <Label Grid.Row="1"
+                               Text="Support the App"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="If you find this app helpful, consider supporting its continued development. Your donation helps keep this project alive and improving!"
+                               FontSize="8"
+                               TextColor="Gray"
+                               HorizontalTextAlignment="Center"
+                               Grid.Row="2"/>
+                        <Button Grid.Row="3"
+                                Text="Show QR"
+                                FontAttributes="Bold"
+                                BackgroundColor="#0070BA"
+                                TextColor="White"
+                                CornerRadius="8"
+                                HeightRequest="50"
+                                WidthRequest="150"
+                                Command="{Binding OpenPopupCommand}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- Version -->
+            <Label Text="App Version: 1.0.0"
+                   FontSize="12"
+                   TextColor="Gray"
+                   HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

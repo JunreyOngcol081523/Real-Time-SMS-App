@@ -55,12 +55,11 @@
                 </Border.GestureRecognizers>
             </Border>
         </Grid>
-        <controls:MTAdView BackgroundColor="Transparent"
-                                           x:Name="mainAds2"
-                                           AdsId="ca-app-pub-8158194714551266/8786117627"
-                                           AdSize="AnchoredAdaptive"
-                                           IsVisible="true"
-                                           />
+        <controls:MTAdView 
+        AdsId="ca-app-pub-8158194714551266/8786117627"
+        AdSize="AnchoredAdaptive"
+        IsVisible="true" />
+
     </VerticalStackLayout>
 
 
