@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Extensions.Logging;
+using Plugin.MauiMTAdmob;
 using Real_Time_SMS_App.ViewModels;
 
 
@@ -12,8 +13,8 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-
-			.ConfigureFonts(fonts =>
+            .UseMauiMTAdmob()
+            .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");

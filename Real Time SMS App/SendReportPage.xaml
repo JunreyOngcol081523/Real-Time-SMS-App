@@ -3,12 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Real_Time_SMS_App.SendReportPage"
              xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMTAdmob"
              Title="SendReportPage">
     
     
     <VerticalStackLayout Padding="20" Spacing="20">
 
-
+        <controls:MTAdView BackgroundColor="Transparent"
+                                           x:Name="sendreportAds"
+                                           AdsId="ca-app-pub-8158194714551266/8932106213"
+                                           AdSize="AnchoredAdaptive"
+                                           IsVisible="true"
+                                           />
         <Label Text="Send SMS Report"
                FontSize="32"
                FontAttributes="Bold"

@@ -2,9 +2,16 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMTAdmob"
              x:Class="Real_Time_SMS_App.MainPage">
 
     <VerticalStackLayout Padding="20" Spacing="20">
+        <controls:MTAdView BackgroundColor="Transparent"
+                                           x:Name="mainAds"
+                                           AdsId="ca-app-pub-8158194714551266/8786117627"
+                                           AdSize="AnchoredAdaptive"
+                                           IsVisible="true"
+                                           />
         <Image Source="sms.png" HeightRequest="80" HorizontalOptions="Center" />
 
         <Label Text="Real Time SMS Reporting"
@@ -48,6 +55,12 @@
                 </Border.GestureRecognizers>
             </Border>
         </Grid>
+        <controls:MTAdView BackgroundColor="Transparent"
+                                           x:Name="mainAds2"
+                                           AdsId="ca-app-pub-8158194714551266/8786117627"
+                                           AdSize="AnchoredAdaptive"
+                                           IsVisible="true"
+                                           />
     </VerticalStackLayout>
 
 
