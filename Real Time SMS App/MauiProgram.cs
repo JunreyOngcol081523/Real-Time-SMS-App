@@ -32,6 +32,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<SpecificDetailsPage>();
 		builder.Services.AddTransient<OperationalDetailsPage>();
 		builder.Services.AddTransient<CasualtyDetailsPage>();
+		builder.Services.AddTransient<InvestigatorInfoPage>();
         return builder.Build();
 	}
 }

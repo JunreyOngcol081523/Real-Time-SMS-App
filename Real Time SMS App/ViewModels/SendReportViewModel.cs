@@ -22,7 +22,10 @@ namespace Real_Time_SMS_App.ViewModels
             LoadSpecificDetails();
             LoadOperationalStatus();
             LoadCasualtyList();
+            LoadInvestigatorInfo();
         }
+
+
         [ObservableProperty]
         private ObservableCollection<string> typeOfReport = new()
         {
@@ -182,6 +185,15 @@ namespace Real_Time_SMS_App.ViewModels
         private string generalAlarmDeclaredBy;
         [ObservableProperty]
         private TimeSpan generalAlarmTime;
+        [ObservableProperty]
+        private string underControlDeclaredBy;
+        [ObservableProperty]
+        private TimeSpan underControlTime;
+        [ObservableProperty]
+        private string fireOutDeclaredBy;
+        [ObservableProperty]
+        private TimeSpan fireOutlTime;
+
         [ObservableProperty] private bool firstAlarmChecked;
         [ObservableProperty] private bool secondAlarmChecked;
         [ObservableProperty] private bool thirdAlarmChecked;
@@ -189,6 +201,8 @@ namespace Real_Time_SMS_App.ViewModels
         [ObservableProperty] private bool taskForceAlphaAlarmChecked;
         [ObservableProperty] private bool taskForceBravoAlarmChecked;
         [ObservableProperty] private bool generalAlarmChecked;
+        [ObservableProperty] private bool underControlChecked;
+        [ObservableProperty] private bool fireOutChecked;
 
         // casualty details tab
         [ObservableProperty]
@@ -265,12 +279,33 @@ namespace Real_Time_SMS_App.ViewModels
         [RelayCommand]
         private async Task InvestigatorInfoPage()
         {
-            //await OpenPage(nameof(null));
+            await OpenPage(nameof(InvestigatorInfoPage));
         }
         [RelayCommand]
         private async Task LaunchSMSApp()
         {
+            try
+            {
+                var contacts = await LoadContactsAsync();
+                var phoneNumbers = contacts
+                    .Select(c => c.PhoneNumber?.Trim())
+                    .Where(p => !string.IsNullOrWhiteSpace(p))
+                    .ToArray();
 
+                if (phoneNumbers.Length == 0)
+                {
+                    await Shell.Current.DisplayAlert("Warning", "No contacts found to send SMS.", "OK");
+                    return;
+                }
+
+                var uri = new Uri($"sms:{string.Join(";", phoneNumbers)}?body={Uri.EscapeDataString(CompileSMSReport())}");
+                await Launcher.Default.OpenAsync(uri);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", "Failed to send SMS: " + ex.Message, "OK");
+            }
+            //await Shell.Current.DisplayAlert("Info", CompileSMSReport(), "OK");
         }
         [RelayCommand]
         private async Task Back()
@@ -501,8 +536,7 @@ namespace Real_Time_SMS_App.ViewModels
         [RelayCommand]
         private async Task SaveOperationalStatus()
         {
-            // Clear all previously saved keys
-            Preferences.Clear();
+
 
             // Save only if checked
             if (FirstAlarmChecked)
@@ -552,6 +586,18 @@ namespace Real_Time_SMS_App.ViewModels
                 Preferences.Set(nameof(GeneralAlarmDeclaredBy), GeneralAlarmDeclaredBy ?? string.Empty);
                 Preferences.Set(nameof(GeneralAlarmTime), GeneralAlarmTime.ToString());
                 Preferences.Set(nameof(GeneralAlarmChecked), true);
+            }
+            if (UnderControlChecked)
+            {
+                Preferences.Set(nameof(UnderControlDeclaredBy), UnderControlDeclaredBy ?? string.Empty);
+                Preferences.Set(nameof(UnderControlTime), UnderControlTime.ToString());
+                Preferences.Set(nameof(UnderControlChecked), true);
+            }
+            if(FireOutChecked)
+            {
+                Preferences.Set(nameof(FireOutDeclaredBy), FireOutDeclaredBy ?? string.Empty);
+                Preferences.Set(nameof(FireOutlTime), FireOutlTime.ToString());
+                Preferences.Set(nameof(FireOutChecked), true);
             }
 
             await Shell.Current.DisplayAlert("Success", "Operational status saved.", "OK");
@@ -608,6 +654,18 @@ namespace Real_Time_SMS_App.ViewModels
             {
                 GeneralAlarmDeclaredBy = Preferences.Get(nameof(GeneralAlarmDeclaredBy), string.Empty);
                 GeneralAlarmTime = TimeSpan.TryParse(Preferences.Get(nameof(GeneralAlarmTime), ""), out var tg) ? tg : TimeSpan.Zero;
+            }
+            UnderControlChecked = Preferences.Get(nameof(UnderControlChecked), false);
+            if (UnderControlChecked)
+            {
+                UnderControlDeclaredBy = Preferences.Get(nameof(UnderControlDeclaredBy), string.Empty);
+                UnderControlTime = TimeSpan.TryParse(Preferences.Get(nameof(UnderControlTime), ""), out var tu) ? tu : TimeSpan.Zero;
+            }
+            FireOutChecked = Preferences.Get(nameof(FireOutChecked), false);
+            if (FireOutChecked)
+            {
+                FireOutDeclaredBy = Preferences.Get(nameof(FireOutDeclaredBy), string.Empty);
+                FireOutlTime = TimeSpan.TryParse(Preferences.Get(nameof(FireOutlTime), ""), out var tf) ? tf : TimeSpan.Zero;
             }
         }
 
@@ -739,6 +797,101 @@ namespace Real_Time_SMS_App.ViewModels
                     System.Diagnostics.Debug.WriteLine($"Error loading casualties: {ex.Message}");
                 }
             }
+        }
+
+        //----------------------save investigator info----------------------//
+        [RelayCommand]
+        public async Task SaveInvestigatorInfo()
+        {
+            Preferences.Set(nameof(InvestigatorICP), InvestigatorICP ?? string.Empty);
+            Preferences.Set(nameof(InvestigatorSourceContact), InvestigatorSourceContact ?? string.Empty);
+            Preferences.Set(nameof(InvestigatorFCOS), InvestigatorFCOS ?? string.Empty);
+            Preferences.Set(nameof(OtherRelevantInformation), OtherRelevantInformation ?? string.Empty);
+            await Shell.Current.DisplayAlert("Info", "Investigator info saved.", "OK");
+            Back();
+        }
+        //----------------------load investigator info----------------------//
+        public void LoadInvestigatorInfo()
+        {
+            InvestigatorICP = Preferences.Get(nameof(InvestigatorICP), string.Empty);
+            InvestigatorSourceContact = Preferences.Get(nameof(InvestigatorSourceContact), string.Empty);
+            InvestigatorFCOS = Preferences.Get(nameof(InvestigatorFCOS), string.Empty);
+            OtherRelevantInformation = Preferences.Get(nameof(OtherRelevantInformation), string.Empty);
+        }
+
+        //------------------------compile sms report------------------------//
+        private string CompileSMSReport()
+        {
+            LoadGeneralInfo();
+            LoadSpecificDetails();
+            LoadOperationalStatus();
+            LoadCasualtyList();
+            LoadInvestigatorInfo();
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"{SelectedReportType}");
+            sb.AppendLine($"FS: {EngineName},{ShiftOnDuty},{FireStationName},{StationAddress},{SelectedProvince},{SelectedRegion}");
+            sb.AppendLine($"IPO: {SelectedIncidentType} @ {PlaceOfOccurrence}");
+            sb.AppendLine($"DTR: {DateTimeReported}");
+            sb.AppendLine($"TED: {DateTimeEngineDispatched}");
+            sb.AppendLine($"TAS: {DateTimeEngineArrived}");
+            sb.AppendLine($"RT: {ResponseTime}");
+            sb.AppendLine($"DIST: {DistanceToIncidentLocation}");
+            sb.AppendLine($"Involved: {Involved}");
+            sb.AppendLine($"Owner/Occupant: {NameOfOwnerOccupant}");
+            sb.AppendLine($"Families: {NumberOfFamiliesAffected}");
+            sb.AppendLine($"Individuals: {NumberOfIndividualsAffected}");
+            sb.AppendLine($"Structures Burned: {NumberOfStructuresBurned}");
+            sb.AppendLine($"FA: {AffectedEstimatedFloorArea} sqm");
+            sb.AppendLine($"Responders:");
+            sb.AppendLine($"BFP FT: {FireTrucksResponding}");
+            sb.AppendLine($"Ambu: {AmbulancesResponding}");
+            sb.AppendLine($"Auxiliary: {AuxiliaryVehiclesResponding}");
+            sb.AppendLine($"Operational Status:");
+            if (FirstAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(FirstAlarmTime):HHmm}H - 1st Alarm by {FirstAlarmDeclaredBy}");
+
+            if (SecondAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(SecondAlarmTime):HHmm}H - 2nd Alarm by {SecondAlarmDeclaredBy}");
+
+            if (ThirdAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(ThirdAlarmTime):HHmm}H - 3rd Alarm by {ThirdAlarmDeclaredBy}");
+
+            if (FourthAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(FourthAlarmTime):HHmm}H - 4th Alarm by {FourthAlarmDeclaredBy}");
+
+            if (TaskForceAlphaAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(TaskForceAlphaTime):HHmm}H - Task Force Alpha by {TaskForceAlphaDeclaredBy}");
+
+            if (TaskForceBravoAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(TaskForceBravoTime):HHmm}H - Task Force Bravo by {TaskForceBravoDeclaredBy}");
+
+            if (GeneralAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(GeneralAlarmTime):HHmm}H - General Alarm by {GeneralAlarmDeclaredBy}");
+
+            if (!string.IsNullOrWhiteSpace(UnderControlDeclaredBy))
+                sb.AppendLine($"{DateTime.Today.Add(UnderControlTime):HHmm}H - Under Control by {UnderControlDeclaredBy}");
+
+            if (!string.IsNullOrWhiteSpace(FireOutDeclaredBy))
+                sb.AppendLine($"{DateTime.Today.Add(FireOutlTime):HHmm}H - Fire Out by {FireOutDeclaredBy}");
+
+            sb.AppendLine($"Casualties: {GetCasualtyListSummary()}");
+            sb.AppendLine($"ICP: {InvestigatorICP}");
+            sb.AppendLine($"Source Contact: {InvestigatorSourceContact}");
+            sb.AppendLine($"FCOS: {InvestigatorFCOS}");
+            sb.AppendLine($"Other Info: {OtherRelevantInformation}");
+
+            return sb.ToString();
+        }
+        private async Task<List<Contact>> LoadContactsAsync()
+        {
+            var filePath = Path.Combine(FileSystem.AppDataDirectory, "contacts.json");
+
+            if (!File.Exists(filePath))
+                return new List<Contact>();
+
+            var json = await File.ReadAllTextAsync(filePath);
+            return JsonSerializer.Deserialize<List<Contact>>(json) ?? new List<Contact>();
         }
 
 
