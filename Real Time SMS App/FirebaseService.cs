@@ -20,7 +20,7 @@ namespace Real_Time_SMS_App
         public async Task PushSmsReportAsync(object smsData)
         {
             await _firebase
-                .Child("smsReports")
+                .Child(Preferences.Get("settingsStation", "smsReport"))
                 .PostAsync(smsData);
         }
     }

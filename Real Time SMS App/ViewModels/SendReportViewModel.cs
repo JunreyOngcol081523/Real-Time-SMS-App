@@ -210,7 +210,7 @@ namespace Real_Time_SMS_App.ViewModels
         [ObservableProperty]
         private string fireOutDeclaredBy;
         [ObservableProperty]
-        private TimeSpan fireOutlTime;
+        private TimeSpan fireOutTime;
 
         [ObservableProperty] private bool firstAlarmChecked;
         [ObservableProperty] private bool secondAlarmChecked;
@@ -234,7 +234,7 @@ namespace Real_Time_SMS_App.ViewModels
         [ObservableProperty]
         private ObservableCollection<string> casualtyType = new()
         {
-            "Injured","Fatality","Missing"
+            "None","Injured","Fatality","Missing"
         };
         [ObservableProperty]
         private string selectedCasualtyType;
@@ -630,11 +630,13 @@ namespace Real_Time_SMS_App.ViewModels
             if(FireOutChecked)
             {
                 Preferences.Set(nameof(FireOutDeclaredBy), FireOutDeclaredBy ?? string.Empty);
-                Preferences.Set(nameof(FireOutlTime), FireOutlTime.ToString());
+                Preferences.Set(nameof(FireOutTime), FireOutTime.ToString());
                 Preferences.Set(nameof(FireOutChecked), true);
             }
 
             await Shell.Current.DisplayAlert("Success", "Operational status saved.", "OK");
+            //method for closing curret page and returning to the previous one
+            await Shell.Current.GoToAsync("..");
         }
 
 
@@ -699,7 +701,7 @@ namespace Real_Time_SMS_App.ViewModels
             if (FireOutChecked)
             {
                 FireOutDeclaredBy = Preferences.Get(nameof(FireOutDeclaredBy), string.Empty);
-                FireOutlTime = TimeSpan.TryParse(Preferences.Get(nameof(FireOutlTime), ""), out var tf) ? tf : TimeSpan.Zero;
+                FireOutTime = TimeSpan.TryParse(Preferences.Get(nameof(FireOutTime), ""), out var tf) ? tf : TimeSpan.Zero;
             }
         }
 
@@ -707,6 +709,10 @@ namespace Real_Time_SMS_App.ViewModels
         [RelayCommand]
         private void AddToCasualtyList()
         {
+            if (string.IsNullOrWhiteSpace(SelectedCasualtyType) || SelectedCasualtyType == "None")
+            {
+                return;
+            }
 
             if (!int.TryParse(CasualtyAge, out int age))
                 age = 0; // Or show validation error
@@ -722,13 +728,15 @@ namespace Real_Time_SMS_App.ViewModels
 
             CasualtyList.Add(newEntry);
             GroupCasualties();
-            // Optional: Clear fields after add
+
+            // Clear fields after adding
             CasualtyName = string.Empty;
             CasualtyAge = string.Empty;
             CasualtyCause = string.Empty;
             CasualtyPerson = string.Empty;
             SelectedCasualtyType = null;
         }
+
         //----------------------group casualties----------------------//
         private void GroupCasualties()
         {
@@ -785,9 +793,13 @@ namespace Real_Time_SMS_App.ViewModels
         //----------------------get casualty list from preference----------------------//
         public string GetCasualtyListSummary()
         {
+            if (CasualtyList == null || !CasualtyList.Any(c => c.Type != "None"))
+                return "0";
+
             var sb = new StringBuilder();
 
             var grouped = CasualtyList
+                .Where(c => c.Type != "None")
                 .GroupBy(c => c.Type)
                 .OrderBy(g => g.Key);
 
@@ -805,6 +817,7 @@ namespace Real_Time_SMS_App.ViewModels
 
             return sb.ToString().TrimEnd();
         }
+
         //----------------------load casualty list from preference----------------------//
         public void LoadCasualtyList()
         {
@@ -907,7 +920,7 @@ namespace Real_Time_SMS_App.ViewModels
                 sb.AppendLine($"{DateTime.Today.Add(UnderControlTime):HHmm}H - Under Control by {UnderControlDeclaredBy}");
 
             if (!string.IsNullOrWhiteSpace(FireOutDeclaredBy))
-                sb.AppendLine($"{DateTime.Today.Add(FireOutlTime):HHmm}H - Fire Out by {FireOutDeclaredBy}");
+                sb.AppendLine($"{DateTime.Today.Add(FireOutTime):HHmm}H - Fire Out by {FireOutDeclaredBy}");
 
             sb.AppendLine($"Casualties: {GetCasualtyListSummary()}");
             sb.AppendLine($"ICP: {InvestigatorICP}");
@@ -927,14 +940,70 @@ namespace Real_Time_SMS_App.ViewModels
             var json = await File.ReadAllTextAsync(filePath);
             return JsonSerializer.Deserialize<List<Contact>>(json) ?? new List<Contact>();
         }
+        //method to push report to Firebase
         private async void PushReportToFirebase()
         {
+            var sb = new StringBuilder();
+            if (FirstAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(FirstAlarmTime):HHmm}H - 1st Alarm by {FirstAlarmDeclaredBy}\n");
+
+            if (SecondAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(SecondAlarmTime):HHmm}H - 2nd Alarm by {SecondAlarmDeclaredBy}\n");
+
+            if (ThirdAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(ThirdAlarmTime):HHmm}H - 3rd Alarm by {ThirdAlarmDeclaredBy}\n");
+
+            if (FourthAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(FourthAlarmTime):HHmm}H - 4th Alarm by {FourthAlarmDeclaredBy} \n");
+
+            if (TaskForceAlphaAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(TaskForceAlphaTime):HHmm}H - Task Force Alpha by {TaskForceAlphaDeclaredBy} \n");
+
+            if (TaskForceBravoAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(TaskForceBravoTime):HHmm}H - Task Force Bravo by {TaskForceBravoDeclaredBy} \n");
+
+            if (GeneralAlarmChecked)
+                sb.AppendLine($"{DateTime.Today.Add(GeneralAlarmTime):HHmm}H - General Alarm by {GeneralAlarmDeclaredBy} \n");
+
+            if (!string.IsNullOrWhiteSpace(UnderControlDeclaredBy))
+                sb.AppendLine($"{DateTime.Today.Add(UnderControlTime):HHmm}H - Under Control by {UnderControlDeclaredBy} \n");
+
+            if (!string.IsNullOrWhiteSpace(FireOutDeclaredBy))
+                sb.AppendLine($"{DateTime.Today.Add(FireOutTime):HHmm}H - Fire Out by {FireOutDeclaredBy} \n");
             var smsData = new SmsReport
             {
                 StationName = Preferences.Get("settingsStation", string.Empty),
                 HotlineNumber = Preferences.Get("settingsHotline", string.Empty),
                 StationEmail = Preferences.Get("settingsEmail", string.Empty),
-                SMSContent = CompileSMSReport()
+                ShiftOnDuty = ShiftOnDuty,
+                EngineName = EngineName,
+                StationAddress = string.Concat(StationAddress, ", ", SelectedProvince, ", ", SelectedRegion),
+                SelectedIncidentType = SelectedIncidentType,
+                PlaceOfOccurrence = PlaceOfOccurrence,
+                DateTimeReported = DateTimeReported,
+                DateTimeEngineDispatched = DateTimeEngineDispatched,
+                DateTimeEngineArrived = DateTimeEngineArrived,
+                ResponseTime = ResponseTime,
+                DistanceToIncidentLocation = DistanceToIncidentLocation,
+                Involved = Involved,
+                NameOfOwnerOccupant = NameOfOwnerOccupant,
+                NumberOfFamiliesAffected = NumberOfFamiliesAffected,
+                NumberOfIndividualsAffected = NumberOfIndividualsAffected,
+                NumberOfStructuresBurned = NumberOfStructuresBurned,
+                AffectedEstimatedFloorArea = AffectedEstimatedFloorArea,
+                FireTrucksResponding = FireTrucksResponding,
+                AmbulancesResponding = AmbulancesResponding,
+                AuxiliaryVehiclesResponding = AuxiliaryVehiclesResponding,
+                AlarmDeclared = sb.ToString(),
+                NumberOfCasualties = NumberOfCasualties,
+                NumberOfInjured = NumberOfInjured,
+                NumberOfFatalities = NumberOfFatalities,
+                NumberOfMissing = NumberOfMissing,
+                CasulatySummary = GetCasualtyListSummary(),
+                InvestigatorICP = InvestigatorICP,
+                InvestigatorSourceContact = InvestigatorSourceContact,
+                InvestigatorFCOS = InvestigatorFCOS,
+                OtherRelevantInformation = OtherRelevantInformation,
             };
 
             try
@@ -948,6 +1017,7 @@ namespace Real_Time_SMS_App.ViewModels
                 System.Diagnostics.Debug.WriteLine($"Error pushing report: {ex.Message}");
             }
         }
+
 
 
     }
