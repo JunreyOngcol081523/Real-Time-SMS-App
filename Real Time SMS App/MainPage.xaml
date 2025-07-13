@@ -6,16 +6,10 @@
              x:Class="Real_Time_SMS_App.MainPage">
 
     <VerticalStackLayout Padding="20" Spacing="20">
-        <controls:MTAdView BackgroundColor="Transparent"
-                                           x:Name="mainAds"
-                                           AdsId="ca-app-pub-8158194714551266/8786117627"
-                                           AdSize="AnchoredAdaptive"
-                                           IsVisible="true"
-                                           />
         <Image Source="sms.png" HeightRequest="80" HorizontalOptions="Center" />
 
         <Label Text="Real Time SMS Reporting"
-               FontSize="32"
+               FontSize="25"
                FontAttributes="Bold"
                HorizontalTextAlignment="Center"
                HorizontalOptions="Center"
@@ -45,7 +39,7 @@
                 </Border.GestureRecognizers>
             </Border>
             <!-- Clear -->
-            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource HomeCard}" HeightRequest="100">
+            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource HomeCard}">
                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
                     <Image Source="delete.png" HeightRequest="40" />
                     <Label Text="Clear Old Data" Style="{StaticResource CardText}" />
@@ -54,11 +48,21 @@
                     <TapGestureRecognizer Command="{Binding ClearPreferencesCommand}" />
                 </Border.GestureRecognizers>
             </Border>
+            <!--Settings-->
+            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource HomeCard}">
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image Source="settings.png" HeightRequest="40" />
+                    <Label Text="Settings" Style="{StaticResource CardText}" />
+                </VerticalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SettingsCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
         </Grid>
         <controls:MTAdView 
         AdsId="ca-app-pub-8158194714551266/8786117627"
         AdSize="AnchoredAdaptive"
-        IsVisible="true" />
+        IsVisible="true"/>
 
     </VerticalStackLayout>
 

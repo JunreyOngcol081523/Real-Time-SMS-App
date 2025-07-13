@@ -18,10 +18,10 @@
             <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
                 <Grid RowDefinitions="18,Auto,Auto,Auto" ColumnDefinitions="*,*" ColumnSpacing="3" RowSpacing="3">
                     <Label Text="Fire Station (FS):" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
-                    <Entry Placeholder="Engine Name" Grid.Row="1" Grid.Column="0" Text="{Binding EngineName, Mode=TwoWay}"/>
-                    <Entry Placeholder="Shift on-duty" Grid.Row="1" Grid.Column="1" Text="{Binding ShiftOnDuty, Mode=TwoWay}"/>
-                    <Entry Placeholder="Name of Fire Station" Grid.Row="2" Grid.Column="0" Text="{Binding FireStationName, Mode=TwoWay}"/>
-                    <Entry Placeholder="Address" Grid.Row="2" Grid.Column="1" Text="{Binding StationAddress}"/>
+                    <Picker ItemsSource="{Binding Engines}" Grid.Row="1" Grid.Column="0" SelectedItem="{Binding EngineName, Mode=TwoWay}"/>
+                    <Picker ItemsSource="{Binding Shifts}" Grid.Row="1" Grid.Column="1" SelectedItem="{Binding ShiftOnDuty, Mode=TwoWay}"/>
+                    <Entry Placeholder="Name of Fire Station" Grid.Row="2" Grid.Column="0" Text="{Binding FireStationName, Mode=TwoWay}" IsEnabled="False"/>
+                    <Entry Placeholder="Address" Grid.Row="2" Grid.Column="1" Text="{Binding StationAddress}" IsEnabled="False"/>
                     <Grid Grid.Row="3" Grid.Column="0">
                         <Label Text="Region"/>
                         <Picker ItemsSource="{Binding Region}" SelectedItem="{Binding SelectedRegion, Mode=TwoWay}" FontSize="10"/>

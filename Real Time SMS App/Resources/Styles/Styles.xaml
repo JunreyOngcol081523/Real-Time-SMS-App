@@ -133,10 +133,10 @@
     </Style>
     <Style x:Key="HomeCard" TargetType="Border">
         <Setter Property="BackgroundColor">
-            <AppThemeBinding Light="{StaticResource White}"  Dark="{StaticResource Black}" />
+            <AppThemeBinding Light="{StaticResource White}" Dark="{StaticResource Black}" />
         </Setter>
         <Setter Property="Padding" Value="16" />
-        <Setter Property="HeightRequest" Value="140" />
+        <!-- Removed HeightRequest to allow auto-height -->
         <Setter Property="Stroke">
             <AppThemeBinding Light="{StaticResource Gray200}" Dark="{StaticResource Gray950}" />
         </Setter>
@@ -151,6 +151,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="CardText" TargetType="Label">
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontAttributes" Value="Bold"/>

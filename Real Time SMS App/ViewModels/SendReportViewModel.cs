@@ -23,8 +23,19 @@ namespace Real_Time_SMS_App.ViewModels
             LoadOperationalStatus();
             LoadCasualtyList();
             LoadInvestigatorInfo();
+            LoadShifts();
+            LoadEngines();
         }
-
+        private void LoadShifts()
+        {
+            Shifts = PreferencesHelper.LoadCollection<string>("SavedShifts");
+            ShiftOnDuty = Shifts.FirstOrDefault() ?? string.Empty;
+        }
+        private void LoadEngines()
+        {
+            Engines = PreferencesHelper.LoadCollection<string>("SavedEngines");
+            EngineName = Engines.FirstOrDefault() ?? string.Empty;
+        }
 
         [ObservableProperty]
         private ObservableCollection<string> typeOfReport = new()
@@ -38,10 +49,17 @@ namespace Real_Time_SMS_App.ViewModels
         [ObservableProperty]
         //Fire Station Name (FS)
         private string fireStationName;
+
+        [ObservableProperty]
+        private ObservableCollection<string> shifts;
+        [ObservableProperty]
+        private string shiftOnDuty;
+
         [ObservableProperty]
         private string engineName;
         [ObservableProperty]
-        private string shiftOnDuty;
+        private ObservableCollection<string> engines;
+        
         [ObservableProperty]
         private string districtProvince;
         [ObservableProperty]
@@ -284,27 +302,43 @@ namespace Real_Time_SMS_App.ViewModels
         [RelayCommand]
         private async Task LaunchSMSApp()
         {
-            try
-            {
-                var contacts = await LoadContactsAsync();
-                var phoneNumbers = contacts
-                    .Select(c => c.PhoneNumber?.Trim())
-                    .Where(p => !string.IsNullOrWhiteSpace(p))
-                    .ToArray();
+            List<string> settings = new List<string>();
+            settings.Add(Preferences.Get("settingsHotline",string.Empty));
+            settings.Add(Preferences.Get("settingsStation", string.Empty));
+            settings.Add(Preferences.Get("settingsAddress", string.Empty));
+            settings.Add(Preferences.Get("settingsEmail", string.Empty));
 
-                if (phoneNumbers.Length == 0)
+            if(settings.Any(s => string.IsNullOrWhiteSpace(s)))
+            {
+                await Shell.Current.DisplayAlert("Warning", "Please set your station settings before sending SMS.", "OK");
+                return;
+            }
+            else
+            {
+                try
                 {
-                    await Shell.Current.DisplayAlert("Warning", "No contacts found to send SMS.", "OK");
-                    return;
-                }
+                    var contacts = await LoadContactsAsync();
+                    var phoneNumbers = contacts
+                        .Select(c => c.PhoneNumber?.Trim())
+                        .Where(p => !string.IsNullOrWhiteSpace(p))
+                        .ToArray();
 
-                var uri = new Uri($"sms:{string.Join(";", phoneNumbers)}?body={Uri.EscapeDataString(CompileSMSReport())}");
-                await Launcher.Default.OpenAsync(uri);
+                    if (phoneNumbers.Length == 0)
+                    {
+                        await Shell.Current.DisplayAlert("Warning", "No contacts found to send SMS.", "OK");
+                        return;
+                    }
+
+                    var uri = new Uri($"sms:{string.Join(";", phoneNumbers)}?body={Uri.EscapeDataString(CompileSMSReport())}");
+                    await Launcher.Default.OpenAsync(uri);
+                    this.PushReportToFirebase();
+                }
+                catch (Exception ex)
+                {
+                    await Shell.Current.DisplayAlert("Error", "Failed to send SMS: " + ex.Message, "OK");
+                }
             }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error", "Failed to send SMS: " + ex.Message, "OK");
-            }
+
             //await Shell.Current.DisplayAlert("Info", CompileSMSReport(), "OK");
         }
         [RelayCommand]
@@ -323,10 +357,10 @@ namespace Real_Time_SMS_App.ViewModels
         private async Task SaveGeneralInfo()
         {
             Preferences.Set(nameof(SelectedReportType), SelectedReportType ?? string.Empty);
-            Preferences.Set(nameof(FireStationName), FireStationName ?? string.Empty);
+            //Preferences.Set(nameof(FireStationName), FireStationName ?? string.Empty);
             Preferences.Set(nameof(EngineName), EngineName ?? string.Empty);
             Preferences.Set(nameof(ShiftOnDuty), ShiftOnDuty ?? string.Empty);
-            Preferences.Set(nameof(StationAddress), StationAddress ?? string.Empty);
+            //Preferences.Set(nameof(StationAddress), StationAddress ?? string.Empty);
             Preferences.Set(nameof(SelectedProvince), SelectedProvince ?? string.Empty);
             Preferences.Set(nameof(SelectedRegion), SelectedRegion ?? string.Empty);
             Preferences.Set(nameof(SelectedIncidentType), SelectedIncidentType ?? string.Empty);
@@ -340,10 +374,10 @@ namespace Real_Time_SMS_App.ViewModels
         private void LoadGeneralInfo()
         {
             SelectedReportType = Preferences.Get(nameof(SelectedReportType), "Real time SMS");
-            FireStationName = Preferences.Get(nameof(FireStationName), string.Empty);
+            FireStationName = Preferences.Get("settingsStation", string.Empty);
             EngineName = Preferences.Get(nameof(EngineName), string.Empty);
             ShiftOnDuty = Preferences.Get(nameof(ShiftOnDuty), string.Empty);
-            StationAddress = Preferences.Get(nameof(StationAddress), string.Empty);
+            StationAddress = Preferences.Get("settingsAddress", string.Empty);
             SelectedProvince = Preferences.Get(nameof(SelectedProvince), string.Empty);
             SelectedRegion = Preferences.Get(nameof(SelectedRegion), string.Empty);
             SelectedIncidentType = Preferences.Get(nameof(SelectedIncidentType), string.Empty);
@@ -892,6 +926,27 @@ namespace Real_Time_SMS_App.ViewModels
 
             var json = await File.ReadAllTextAsync(filePath);
             return JsonSerializer.Deserialize<List<Contact>>(json) ?? new List<Contact>();
+        }
+        private async void PushReportToFirebase()
+        {
+            var smsData = new SmsReport
+            {
+                StationName = Preferences.Get("settingsStation", string.Empty),
+                HotlineNumber = Preferences.Get("settingsHotline", string.Empty),
+                StationEmail = Preferences.Get("settingsEmail", string.Empty),
+                SMSContent = CompileSMSReport()
+            };
+
+            try
+            {
+                var firebaseService = new FirebaseService();
+                await firebaseService.PushSmsReportAsync(smsData);
+                System.Diagnostics.Debug.WriteLine("Report pushed successfully.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error pushing report: {ex.Message}");
+            }
         }
 
 

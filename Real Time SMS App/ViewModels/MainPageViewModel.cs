@@ -12,8 +12,7 @@ namespace Real_Time_SMS_App.ViewModels
 {
     public partial class MainPageViewModel : ObservableObject
     {
-        [ObservableProperty]
-        string imageSource;
+
         public MainPageViewModel()
         {
             ShowInterstitialAd();
@@ -66,9 +65,9 @@ namespace Real_Time_SMS_App.ViewModels
             }
         }
         [RelayCommand]
-        private async Task About()
+        private async Task Settings()
         {
-            //await NavigateToPage(nameof(AboutPage));
+            await NavigateToPage(nameof(SettingsPage));
         }
         [RelayCommand]
         private async Task ClearPreferences()

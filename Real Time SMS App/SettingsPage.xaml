@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Real_Time_SMS_App.SettingsPage"
+             xmlns:viewmodel="clr-namespace:Real_Time_SMS_App.ViewModels"
+             Title="Settings Page">
+    <ScrollView>
+    <VerticalStackLayout Padding="15">
+        
+        <Label Text="Settings"
+               FontSize="25"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="Center"
+               HorizontalOptions="Center"
+               Margin="0,10,0,20" />
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource HomeCard}" Padding="20" Margin="0,0,0,10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Station Hotline no:" VerticalTextAlignment="Center"/>
+                    <Entry Text="{Binding HotlineNumber}" Placeholder="ex: 09xxxxxxxxx" Keyboard="Numeric"/>
+                    <Label Text="Fire Station Name:" VerticalTextAlignment="Center"/>
+                    <Entry Text="{Binding StationName}" Placeholder="Station or Sub-station name"/>
+                    <Label Text="Fire Station Address:" VerticalTextAlignment="Center"/>
+                    <Entry Text="{Binding StationAddress}" Placeholder="Unit no, Bldg no, St, Brgy, City/Mun"/>
+                    <Label Text="Station gmail:" VerticalTextAlignment="Center"/>
+                    <Entry Text="{Binding StationEmail}" Placeholder="yourfirestation@gmail.com" Keyboard="Email"/>
+                    <Button Command="{Binding SaveSettingsCommand}" Text="Save Station Info." BackgroundColor="#E67E22"/>
+                </VerticalStackLayout>
+            </Border>
+        <!--shift-->
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource HomeCard}" Padding="20" HeightRequest="180" Margin="0,0,0,10">
+                <Grid RowDefinitions="Auto,Auto">
+                    <Grid Grid.Row="0" ColumnDefinitions="60,*,Auto">
+                        <Label Grid.Column="0" Text="Shifts: " VerticalTextAlignment="Center"/>
+                        <Entry Grid.Column="1" Placeholder="Shift A/B" Text="{Binding Shift}"/>
+                        <Button Grid.Column="2" ImageSource="plus.png" BackgroundColor="Transparent" HeightRequest="50" Command="{Binding AddShiftCommand}"/>
+                    </Grid>
+                    <!--Collection view for displaying shifts dynamically-->
+                    <Grid Grid.Row="1">
+                        <CollectionView ItemsSource="{Binding Shifts}" 
+                            Margin="0,10,0,0"
+                            HeightRequest="120"
+                            VerticalScrollBarVisibility="Always">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,*">
+                                        <Label Grid.Column="0" Text="{Binding .}" 
+                                               VerticalTextAlignment="Center" 
+                                               FontSize="12" 
+                                               HorizontalTextAlignment="Center"/>
+                                        <Button Grid.Column="1" 
+                                                ImageSource="delete.png"
+                                                BackgroundColor="Transparent"
+                                                HeightRequest="30"
+                                                WidthRequest="20"
+                                                HorizontalOptions="Start"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveShiftCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+
+                </Grid>
+            </Border>
+        <!--engine-->
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource HomeCard}" Padding="20" Margin="0,0,0,10">
+                <Grid RowDefinitions="Auto,Auto">
+                    <Grid Grid.Row="0" ColumnDefinitions="60,*,Auto">
+                        <Label Grid.Column="0" Text="Engine: " VerticalTextAlignment="Center"/>
+                        <Entry Grid.Column="1" Placeholder="ex: Engine 144" Text="{Binding Engine}"/>
+                        <Button Grid.Column="2" ImageSource="plus.png" BackgroundColor="Transparent" HeightRequest="50" Command="{Binding AddEngineCommand}"/>
+                    </Grid>
+                    <!--Collection view for displaying shifts dynamically-->
+                    <Grid Grid.Row="1">
+                        <CollectionView ItemsSource="{Binding Engines}" 
+                            Margin="0,10,0,0"
+                            HeightRequest="120"
+                            VerticalScrollBarVisibility="Always">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,*">
+                                        <Label Grid.Column="0" Text="{Binding .}" 
+                                               VerticalTextAlignment="Center" 
+                                               FontSize="12" 
+                                               HorizontalTextAlignment="Center"/>
+                                        <Button Grid.Column="1" 
+                                                ImageSource="delete.png"
+                                                BackgroundColor="Transparent"
+                                                HeightRequest="30"
+                                                WidthRequest="20"
+                                                HorizontalOptions="Start"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveEngineCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+
+                </Grid>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
