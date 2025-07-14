@@ -45,7 +45,7 @@
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\sms.png" BackgroundColor="#ffffff" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#E0F2F1" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\smssplash.png" Color="#ffffff" BaseSize="150,150" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -94,6 +94,7 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="12.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="FirebaseDatabase.net" Version="5.0.0" />
+		<PackageReference Include="Google.Cloud.Firestore" Version="3.10.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.81" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.7" />
 		<PackageReference Include="Plugin.MauiMTAdmob" Version="2.0.2" />
@@ -101,37 +102,37 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="AboutPage.xaml">
+	  <MauiXaml Update="Views\AboutPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="CasualtyDetailsPage.xaml">
+	  <MauiXaml Update="Views\CasualtyDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ContactPage.xaml">
+	  <MauiXaml Update="Views\ContactPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="GeneralInfoPage.xaml">
+	  <MauiXaml Update="Views\GeneralInfoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="InitialInfoPage.xaml">
+	  <MauiXaml Update="Views\InitialInfoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="InvestigatorInfoPage.xaml">
+	  <MauiXaml Update="Views\InvestigatorInfoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="OperationalDetailsPage.xaml">
+	  <MauiXaml Update="Views\OperationalDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="PopupPage.xaml">
+	  <MauiXaml Update="Views\PopupPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="SendReportPage.xaml">
+	  <MauiXaml Update="Views\SendReportPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="SettingsPage.xaml">
+	  <MauiXaml Update="Views\SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="SpecificDetailsPage.xaml">
+	  <MauiXaml Update="Views\SpecificDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

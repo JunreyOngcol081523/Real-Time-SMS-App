@@ -7,6 +7,7 @@ namespace Real_Time_SMS_App.ViewModels
 {
     public partial class SettingsViewModel : ObservableObject
     {
+        FirebaseService firebaseService;
         // Constructor
         public SettingsViewModel()
         {
@@ -14,11 +15,80 @@ namespace Real_Time_SMS_App.ViewModels
             LoadSettings();
             Shifts = PreferencesHelper.LoadCollection<string>(shiftKey);
             Engines = PreferencesHelper.LoadCollection<string>(engineKey);
+            firebaseService = new FirebaseService();
+            // Load regions and provinces from Firebase
+            _ = LoadRegionsAsync();
+        }
+        // load regions from Firebase
+        [RelayCommand]
+        private async Task LoadRegionsAsync()
+        {
+            Regions = new ObservableCollection<string> { "Region I", "Region II", "Region III" };
+            var regionList = await firebaseService.FetchAllRegions();
+            if (regionList != null)
+            {
+                //Regions = new ObservableCollection<string>(regionList);
 
+                Regions = new ObservableCollection<string> { "Region IV", "Region V", "Region VI" };
+            }
+        }
+        //load provinces from Firebase based on selected region
+        [RelayCommand]
+        private async Task LoadProvincesAsync()
+        {
+            if (string.IsNullOrWhiteSpace(SelectedRegion))
+            {
+                Provinces = new ObservableCollection<string>();
+                return;
+            }
+            var provinceList = await firebaseService.FetchAllProvinces(SelectedRegion);
+            if (provinceList != null)
+            {
+                Provinces = new ObservableCollection<string>(provinceList);
+            }
+        }
+        //load stations from Firebase based on selected province
+        [RelayCommand]
+        private async Task LoadStationsAsync()
+        {
+            if (string.IsNullOrWhiteSpace(SelectedProvince))
+            {
+                Stations = new ObservableCollection<string>();
+                return;
+            }
+            var stationList = await firebaseService.FetchAllStations(SelectedProvince);
+            if (stationList != null)
+            {
+                Stations = new ObservableCollection<string>(stationList);
+            }
+        }
+        // on selected region changed, load provinces
+        [RelayCommand]
+        private void OnSelectedRegionChanged()
+        {
+            LoadProvincesAsync();
+            SelectedProvince = null; // Reset province when region changes
+            Stations = new ObservableCollection<string>(); // Clear stations
+        }
+        // on selected province changed, load stations
+        [RelayCommand]
+        private void OnSelectedProvinceChanged()
+        {
+            LoadStationsAsync();
         }
         const string shiftKey = "SavedShifts";
         const string engineKey = "SavedEngines";
-
+        [ObservableProperty]
+        private ObservableCollection<string> regions;
+        [ObservableProperty]
+        private ObservableCollection<string> provinces;        
+        [ObservableProperty]
+        private ObservableCollection<string> stations;
+        [ObservableProperty]
+        private string selectedRegion;
+        [ObservableProperty]
+        private string selectedProvince;        
+ 
         [ObservableProperty]
         private string hotlineNumber;
         [ObservableProperty]
