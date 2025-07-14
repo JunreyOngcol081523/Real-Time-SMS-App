@@ -17,7 +17,7 @@
             HorizontalOptions="Center"
             Padding="10"/>
         
-        <Border Style="{StaticResource HomeCard}" HeightRequest="370" Margin="0,0,0,20" >
+        <Border Style="{StaticResource HomeCard}"  Margin="0,0,0,20" >
             <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="100,*">
                 <Label Grid.Row="0" Grid.Column="0" Text="Incident Command Post:" VerticalTextAlignment="Center"/>
                 <Entry Grid.Row="0" Grid.Column="1" Placeholder="Location with Landmark" Text="{Binding InvestigatorICP, Mode=TwoWay}"/>
@@ -30,9 +30,13 @@
 
                 <Label Grid.Row="3" Grid.Column="0" Text="Other relevant info:" VerticalTextAlignment="Center"/>
                 <Editor Grid.Row="3" Grid.Column="1" HeightRequest="90" Text="{Binding OtherRelevantInformation}"/>
-                <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Save" BackgroundColor="#E67E22" Command="{Binding SaveInvestigatorInfoCommand, Mode=TwoWay}"/>
+
             </Grid>
         </Border>
-        <Button Text="Back" Command="{Binding BackCommand}"/>
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="5">
+            <Button Grid.Column="0" Text="Save" BackgroundColor="#E67E22" Command="{Binding SaveInvestigatorInfoCommand, Mode=TwoWay}"/>
+            <Button Grid.Column="1" Text="Back" Command="{Binding BackCommand}"/>
+        </Grid>
+
     </VerticalStackLayout>
 </ContentPage>

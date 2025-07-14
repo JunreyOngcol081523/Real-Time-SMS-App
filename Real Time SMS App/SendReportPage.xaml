@@ -17,8 +17,8 @@
               RowDefinitions="Auto, Auto, Auto, Auto,Auto"
               ColumnDefinitions="*,*">
 
-            <!-- Row 0: 1 Border spanning 2 columns -->
-            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="100"
+
+            <Border Grid.Row="0" Grid.Column="0"
                     Style="{StaticResource HomeCard}">
                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
                     <Image Source="fire.png" HeightRequest="40" />
@@ -29,8 +29,8 @@
                 </Border.GestureRecognizers>
             </Border>
 
-            <!-- Row 1: 2 Borders -->
-            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource HomeCard}">
+
+            <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource HomeCard}">
                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
                     <Image Source="persons.png" HeightRequest="40" />
                     <Label Text="Step 2. Specific Details" Style="{StaticResource CardText}" />
@@ -40,7 +40,7 @@
                 </Border.GestureRecognizers>
             </Border>
 
-            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource HomeCard}">
+            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource HomeCard}">
                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
                     <Image Source="firetruck.png" HeightRequest="40" />
                     <Label Text="Step 3. Operational Details" Style="{StaticResource CardText}" FontSize="15"/>
@@ -50,8 +50,8 @@
                 </Border.GestureRecognizers>
             </Border>
 
-            <!-- Row 2: 2 Borders -->
-            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource HomeCard}">
+ 
+            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource HomeCard}">
                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
                     <Image Source="injured.png" HeightRequest="40" />
                     <Label Text="Step 4. Casualty Details" Style="{StaticResource CardText}" FontSize="15" />
@@ -61,7 +61,7 @@
                 </Border.GestureRecognizers>
             </Border>
 
-            <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource HomeCard}">
+            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource HomeCard}">
                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
                     <Image Source="investigator.png" HeightRequest="40" />
                     <Label Text="Step 5. Investigator's Info" Style="{StaticResource CardText}" FontSize="15"/>
@@ -70,8 +70,8 @@
                     <TapGestureRecognizer Command="{Binding InvestigatorInfoPageCommand}" />
                 </Border.GestureRecognizers>
             </Border>
-            <!-- Row 2:2 Border spanning 2 columns -->
-            <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="80"
+
+            <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
                     Style="{StaticResource HomeCard}">
                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
                     <Image Source="send.png" HeightRequest="20" />

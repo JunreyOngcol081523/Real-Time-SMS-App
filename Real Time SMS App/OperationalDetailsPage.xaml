@@ -13,7 +13,7 @@
                                 AdSize="AnchoredAdaptive"
                                 IsVisible="true"/>
             <Border Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 10">
-                <Grid RowSpacing="5" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto, Auto" ColumnDefinitions="50,60,*,80">
+                <Grid RowSpacing="5" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto, Auto" ColumnDefinitions="50,60,*,80" ColumnSpacing="5">
                     <Label Grid.Row="0" Grid.Column="0" FontSize="20" FontAttributes="Bold" Grid.ColumnSpan="4" Text="Operational Status" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
 
                     <Label Grid.Row="1" Grid.Column="0" FontSize="15" FontAttributes="Bold" Text="Raise" VerticalTextAlignment="Center"/>
@@ -67,14 +67,16 @@
                     <TimePicker Grid.Row="10" Grid.Column="3" Time="{Binding FireOutTime}" IsEnabled="{Binding FireOutChecked}" />
                 </Grid>
             </Border>
-
-            <Button ImageSource="firetruck.png" 
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="5">
+                <Button Grid.Column="0"
                     HeightRequest="50" 
                     Text="Save Operational Details" 
                     Command="{Binding SaveOperationalStatusCommand}" 
                     BackgroundColor="#E67E22"
-                    Margin="0,0,0,5"/>
-            <Button Text="Back" Command="{Binding BackCommand}"/>
+                    />
+                <Button Grid.Column="1" Text="Back" Command="{Binding BackCommand}"/>
+            </Grid>
+
 
         </VerticalStackLayout>
     </ScrollView>

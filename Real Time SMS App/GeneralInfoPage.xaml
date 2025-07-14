@@ -81,8 +81,11 @@
                     <Entry Text="{Binding DistanceToIncidentLocation, Mode=TwoWay}" Grid.Row="1" Keyboard="Numeric" Placeholder="Distance to incident location"/>
                 </Grid>
             </Border>
-            <Button Text="Save Info" Command="{Binding SaveGeneralInfoCommand}" Margin="0,0,0,5" BackgroundColor="#E67E22"/>
-                    <Button Text="Back" Command="{Binding BackCommand}"/>
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="5">
+                <Button Grid.Column="0" Text="Save Info" Command="{Binding SaveGeneralInfoCommand}" BackgroundColor="#E67E22"/>
+                <Button Grid.Column="1" Text="Back" Command="{Binding BackCommand}"/>
+            </Grid>
+
 
 
     </VerticalStackLayout>
