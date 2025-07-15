@@ -9,4 +9,13 @@ public partial class SettingsPage : ContentPage
 		BindingContext = vm;
         InitializeComponent();
 	}
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        if(BindingContext is SettingsViewModel vm)
+        {
+            // Load regions, provinces, and stations
+            await vm.LoadRegionsAsync();
+        }
+    }
 }
