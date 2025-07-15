@@ -30,6 +30,7 @@ namespace Real_Time_SMS_App.Models
         public string RegionId { get; set; } // Reference to the region this province belongs to
     }
     // stations class that belongs to provinces
+    [FirestoreData]
     public class StationsModel
     {
         [FirestoreProperty]

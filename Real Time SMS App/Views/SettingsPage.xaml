@@ -13,26 +13,24 @@
                HorizontalTextAlignment="Center"
                HorizontalOptions="Center"
                Margin="0,10,0,20" />
+
             <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource HomeCard}" Padding="20" Margin="0,0,0,10">
                 <VerticalStackLayout Spacing="2">
-                    <Label Text="Select Region:" VerticalTextAlignment="Center"/>
-                    <Grid ColumnDefinitions="70,*">
-                        <Picker Grid.Column="0" ItemsSource="{Binding Regions}" SelectedItem="{Binding SelectedRegionID}"/>
-                        <Entry Grid.Column="1" Text="{Binding RegionName}" IsReadOnly="True" HorizontalTextAlignment="Start"/>
-                    </Grid>
 
-                    <Label Text="Select Province:" VerticalTextAlignment="Center"/>
-                    <Grid ColumnDefinitions="95,*">
-                        <Picker Grid.Column="0" ItemsSource="{Binding Provinces}" SelectedItem="{Binding SelectedProvinceID, Mode=TwoWay}"/>
-                        <Entry Grid.Column="1" Text="{Binding ProvinceName}" IsReadOnly="true"/>
-                    </Grid>
-                    <Label Text="Fire Station Name:" VerticalTextAlignment="Center"/>
-                    <Picker ItemsSource="{Binding Stations}" SelectedItem="{Binding StationName}" />
-                    <Label Text="Station Hotline no:" VerticalTextAlignment="Center"/>
+                    <Label Text="Select Region:" VerticalTextAlignment="Center" FontAttributes="Bold" />
+                    <Picker ItemsSource="{Binding Regions}" SelectedItem="{Binding SelectedRegionName, Mode=TwoWay}"/>
+
+
+                    <Label Text="Select Province:" VerticalTextAlignment="Center" FontAttributes="Bold" />
+                    <Picker ItemsSource="{Binding Provinces}" SelectedItem="{Binding SelectedProvinceName, Mode=TwoWay}"/>
+
+                    <Label Text="Fire Station Name:" VerticalTextAlignment="Center" FontAttributes="Bold" />
+                    <Picker ItemsSource="{Binding Stations}" SelectedItem="{Binding SelectedStationName, Mode=TwoWay}" />
+                    <Label Text="Station Hotline no:" VerticalTextAlignment="Center" FontAttributes="Bold" />
                     <Entry Text="{Binding HotlineNumber}" Placeholder="ex: 09xxxxxxxxx" Keyboard="Numeric"/>
-                    <Label Text="Fire Station Address:" VerticalTextAlignment="Center"/>
+                    <Label Text="Fire Station Address:" VerticalTextAlignment="Center" FontAttributes="Bold" />
                     <Entry Text="{Binding StationAddress}" Placeholder="Unit no, Bldg no, St, Brgy, City/Mun"/>
-                    <Label Text="Station gmail:" VerticalTextAlignment="Center"/>
+                    <Label Text="Station gmail:" VerticalTextAlignment="Center" FontAttributes="Bold" />
                     <Entry Text="{Binding StationEmail}" Placeholder="yourfirestation@gmail.com" Keyboard="Email"/>
 
                 </VerticalStackLayout>
@@ -41,7 +39,7 @@
             <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource HomeCard}" Padding="20"  Margin="0,0,0,10">
                 <Grid RowDefinitions="Auto,Auto">
                     <Grid Grid.Row="0" ColumnDefinitions="60,*,Auto">
-                        <Label Grid.Column="0" Text="Shifts: " VerticalTextAlignment="Center"/>
+                        <Label Grid.Column="0" Text="Shifts: " VerticalTextAlignment="Center" FontAttributes="Bold" />
                         <Entry Grid.Column="1" Placeholder="Shift A/B" Text="{Binding Shift}"/>
                         <Button Grid.Column="2" ImageSource="plus.png" BackgroundColor="Transparent" HeightRequest="50" Command="{Binding AddShiftCommand}"/>
                     </Grid>
@@ -78,7 +76,7 @@
             <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource HomeCard}" Padding="20" Margin="0,0,0,10">
                 <Grid RowDefinitions="Auto,Auto">
                     <Grid Grid.Row="0" ColumnDefinitions="60,*,Auto">
-                        <Label Grid.Column="0" Text="Engine: " VerticalTextAlignment="Center"/>
+                        <Label Grid.Column="0" Text="Engine: " VerticalTextAlignment="Center" FontAttributes="Bold" />
                         <Entry Grid.Column="1" Placeholder="ex: Engine 144" Text="{Binding Engine}"/>
                         <Button Grid.Column="2" ImageSource="plus.png" BackgroundColor="Transparent" HeightRequest="50" Command="{Binding AddEngineCommand}"/>
                     </Grid>
@@ -112,7 +110,7 @@
                 </Grid>
             </Border>
             <Button Command="{Binding SaveSettingsCommand}" Text="Save Station Info." BackgroundColor="#E67E22"/>
-            <!--<Button Text="Save Regions" Command="{Binding AddProvincesToAllRegionsCommand}"/>-->
+            <!--<Button Text="Save Regions" Command="{Binding AddStationCommand}"/>-->
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

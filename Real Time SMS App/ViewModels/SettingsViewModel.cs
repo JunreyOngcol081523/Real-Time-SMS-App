@@ -5,6 +5,7 @@ using Microsoft.Maui.Controls;
 using Real_Time_SMS_App.Models;
 using Real_Time_SMS_App.Services;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -16,8 +17,7 @@ namespace Real_Time_SMS_App.ViewModels
         //constructor
         public SettingsViewModel()
         {
-            // Load initial settings
-            LoadSettings();
+ 
             // Load regions, provinces, and stations
             Regions = new ObservableCollection<string>();
             Provinces = new ObservableCollection<string>();
@@ -25,8 +25,17 @@ namespace Real_Time_SMS_App.ViewModels
             Shifts = PreferencesHelper.LoadCollection<string>(shiftKey);
             Engines = PreferencesHelper.LoadCollection<string>(engineKey);
             _firestoreService = new FirestoreService();
-        }
+            _ = InitializeAsync();
 
+        }
+        [RelayCommand]
+        private async Task InitializeAsync()
+        {
+            await LoadRegionsAsync(); // Populate Regions
+            await LoadSettings();     // Load preferences AFTER Regions are ready
+        }
+        public string ProvinceID { get; private set; }
+        public string RegionID { get; private set; }
         private readonly FirestoreService _firestoreService;
         const string shiftKey = "SavedShifts";
         const string engineKey = "SavedEngines";
@@ -37,20 +46,18 @@ namespace Real_Time_SMS_App.ViewModels
         [ObservableProperty]
         private ObservableCollection<string> stations;
         [ObservableProperty]
-        private string selectedRegionID;  
+        private string selectedRegionName;  
+
         [ObservableProperty]
-        private string regionName;
-        [ObservableProperty]
-        private string selectedProvinceID;            
-        [ObservableProperty]
-        private string provinceName;        
+        private string selectedProvinceName;            
+   
  
         [ObservableProperty]
         private string hotlineNumber;
         [ObservableProperty]
         private string stationEmail;
         [ObservableProperty]
-        private string stationName;
+        private string selectedStationName;
         [ObservableProperty]
         private string stationAddress;
 
@@ -62,12 +69,17 @@ namespace Real_Time_SMS_App.ViewModels
         ObservableCollection<string> engines;
         [ObservableProperty]
         private string engine;
+
+
+
         //save settings
         [RelayCommand]
         private async Task SaveSettings()
         {
+            Preferences.Set("settingsRegion", SelectedRegionName ?? string.Empty);
+            Preferences.Set("settingsProvince", SelectedProvinceName ?? string.Empty);
             Preferences.Set("settingsHotline", HotlineNumber ?? string.Empty);
-            Preferences.Set("settingsStation", StationName ?? string.Empty);
+            Preferences.Set("settingsStation", SelectedStationName ?? string.Empty);
             Preferences.Set("settingsAddress", StationAddress ?? string.Empty);
             Preferences.Set("settingsEmail", StationEmail ?? string.Empty);
             //show dialog success after saving
@@ -77,14 +89,37 @@ namespace Real_Time_SMS_App.ViewModels
         }
         //load settings
         [RelayCommand]
-        private void LoadSettings()
+        private async Task LoadSettings()
         {
+            // Get saved values first
+            var savedRegion = Preferences.Get("settingsRegion", string.Empty);
+            var savedProvince = Preferences.Get("settingsProvince", string.Empty);
+            var savedStation = Preferences.Get("settingsStation", string.Empty);
+
             HotlineNumber = Preferences.Get("settingsHotline", string.Empty);
-            StationName = Preferences.Get("settingsStation", string.Empty);
             StationAddress = Preferences.Get("settingsAddress", string.Empty);
             StationEmail = Preferences.Get("settingsEmail", string.Empty);
-        }
 
+            // Set the region name first
+            if (!string.IsNullOrWhiteSpace(savedRegion))
+            {
+                SelectedRegionName = savedRegion;
+
+                // Load provinces and wait
+                await LoadProvinces(savedRegion);
+
+                // Now set province
+                if (!string.IsNullOrWhiteSpace(savedProvince))
+                    SelectedProvinceName = savedProvince;
+
+                // Load stations and wait
+                await LoadStations(savedProvince); // if this depends on province
+
+                // Now set station
+                if (!string.IsNullOrWhiteSpace(savedStation))
+                    SelectedStationName = savedStation;
+            }
+        }
 
 
 
@@ -156,9 +191,9 @@ namespace Real_Time_SMS_App.ViewModels
                 Regions.Clear();
                 foreach (var region in regionsList)
                 {
-                    if (!String.IsNullOrWhiteSpace(region.RegionId) && !Regions.Contains(region.RegionId))
+                    if (!String.IsNullOrWhiteSpace(region.RegionName) && !Regions.Contains(region.RegionName))
                     {
-                        Regions.Add(region.RegionId);
+                        Regions.Add(region.RegionName);
                     }
                 }
             }
@@ -167,32 +202,107 @@ namespace Real_Time_SMS_App.ViewModels
                 await Shell.Current.DisplayAlert("Error", $"Failed to load regions: {ex.Message}", "OK");
             }
         }
-        //display region name by selectedregionid
-        async partial void OnSelectedRegionIDChanged(string value)
-        {
-            var regionModel = await _firestoreService.GetDocumentByFieldAsync<RegionsModel>("Reg", "RegionId", value);
-            RegionName = regionModel.RegionName;
-            await LoadProvinces();
-        }
 
         //load all provinces to the provinces collection by selected region id
-        public async Task LoadProvinces()
+        public async Task LoadProvinces(string regName)
         {
-            var provinces = await _firestoreService.GetProvincesByRegionIdAsync(SelectedRegionID);
+            // Clear the collection first to avoid duplicate entries
+            Provinces.Clear();
+
+            if (string.IsNullOrWhiteSpace(regName))
+            {
+                await Shell.Current.DisplayAlert("Error", "Region name is invalid or empty.", "OK");
+                return;
+            }
+
+            var regionModel = await _firestoreService.GetDocumentByFieldAsync<RegionsModel>("Reg", "RegionName", regName);
+            if (regionModel == null || string.IsNullOrWhiteSpace(regionModel.RegionId))
+            {
+                await Shell.Current.DisplayAlert("Error", $"No matching region found for '{regName}'.", "OK");
+                return;
+            }
+
+            var regionID = regionModel.RegionId;
+
+            var provinces = await _firestoreService.GetProvincesByRegionIdAsync(regionID);
+            if (provinces == null || provinces.Count == 0)
+            {
+                await Shell.Current.DisplayAlert("No Provinces", $"No provinces found for region: {regionID}", "OK");
+                return;
+            }
+
             foreach (var province in provinces)
             {
-                //check if the province ID is not null or empty and not already in the collection
-                if (!string.IsNullOrWhiteSpace(province.ProvinceId) && !this.Provinces.Contains(province.ProvinceId))
-                    //add the province ID to the provinces collection
-                    this.Provinces.Add(province.ProvinceId);
+                if (!string.IsNullOrWhiteSpace(province.ProvinceName) && !Provinces.Contains(province.ProvinceName))
+                {
+                    Provinces.Add(province.ProvinceName);
+                }
+            }
+
+            // Optional: notify after loading
+            
+        }
+
+
+        //onitem changed for selected region name
+        partial void OnSelectedRegionNameChanged(string value)
+        {
+
+
+            if (!string.IsNullOrWhiteSpace(SelectedRegionName))
+            {
+                _ = LoadProvinces(value);
+            }
+            else
+            {
+                Provinces.Clear(); // Clear provinces if no region is selected
             }
         }
-        async partial void OnSelectedProvinceIDChanged(string value)
-        {
-            var provinceModel = await _firestoreService.GetDocumentByFieldAsync<ProvincesModel>("Provinces", "ProvinceId", value);
-            ProvinceName = provinceModel.ProvinceName;
-        }
         [RelayCommand]
+
+        //load all stations to the stations collection by selected province id
+        private async Task LoadStations(string provinceName)
+        {
+            // Clear the collection first to avoid duplicate entries
+            Stations.Clear();
+            if (string.IsNullOrWhiteSpace(provinceName))
+            {
+                await Shell.Current.DisplayAlert("Error", "Province name is invalid or empty.", "OK");
+                return;
+            }
+            var provinceModel = await _firestoreService.GetDocumentByFieldAsync<ProvincesModel>("Provinces", "ProvinceName", provinceName);
+            if (provinceModel == null || string.IsNullOrWhiteSpace(provinceModel.ProvinceId))
+            {
+                await Shell.Current.DisplayAlert("Error", $"No matching province found for '{provinceName}'.", "OK");
+                return;
+            }
+            var provinceID = provinceModel.ProvinceId;
+            var stations = await _firestoreService.GetStationsByProvinceIdAsync(provinceID);
+            if (stations == null || stations.Count == 0)
+            {
+                await Shell.Current.DisplayAlert("No Stations", $"No stations found for province: {provinceID}", "OK");
+                return;
+            }
+            foreach (var station in stations)
+            {
+                if (!string.IsNullOrWhiteSpace(station.StationName) && !Stations.Contains(station.StationName))
+                {
+                    Stations.Add(station.StationName);
+                }
+            }
+        }
+        //method for onitem changed for selected province name
+        partial void OnSelectedProvinceNameChanged(string value)
+        {
+            if (!string.IsNullOrWhiteSpace(SelectedProvinceName))
+            {
+                _ = LoadStations(value);
+            }
+            else
+            {
+                Stations.Clear(); // Clear stations if no province is selected
+            }
+        }
         private async Task AddRegion()
         {
             var regions = new List<RegionsModel>
@@ -261,6 +371,32 @@ namespace Real_Time_SMS_App.ViewModels
 
             await Shell.Current.DisplayAlert("Success", "Provinces added to Firestore.", "OK");
         }
+        [RelayCommand]
+        public async Task AddStation()
+        {
+            var stations = new List<StationsModel>
+            {
+                new StationsModel { StationID = "aloranmfs", StationName = "Aloran Municipal Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "panaonmfs", StationName = "Panaon Municipal Fire Station", ProvinceId = "MisOcc" },                
+                new StationsModel { StationID = "oroquietacfs", StationName = "Oroquieta City Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "ozamizcfs", StationName = "Ozamiz City Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "tangubcfs", StationName = "Tangub City Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "donvicmfs", StationName = "Don Victoriano Municipal Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "bonifaciomfs", StationName = "Bonifacio Municipal Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "clarinmfs", StationName = "Clarin Municipal Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "sinacabanmfs", StationName = "Sinacaban Municipal Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "jimenezmfs", StationName = "Jimenez Municipal Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "lopezjaenamfs", StationName = "Lopez Jaena Municipal Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "plaridelmfs", StationName = "Plaridel Municipal Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "calambamfs", StationName = "Calamba Municipal Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "sapangdalagamfs", StationName = "Sapang Dalaga Municipal Fire Station", ProvinceId = "MisOcc" },
+                new StationsModel { StationID = "concepcionmfs", StationName = "Concepcion Municipal Fire Station", ProvinceId = "MisOcc" }
 
+            };
+            foreach(var stn in stations)
+            {
+                await _firestoreService.AddStationAsync(stn);
+            }
+        }
     }
 }
